@@ -17,7 +17,7 @@ namespace WEB_API_LAPTOP.Models
         public String HARDDRIVE { get; set; }
         public String CARDSCREEN { get; set; }
         public String OS { get; set; }
-        public String MAHANG { get; set; }
+        public int MAHANG { get; set; }
 
 
     }
