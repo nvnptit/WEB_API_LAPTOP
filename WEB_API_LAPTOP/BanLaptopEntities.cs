@@ -8,6 +8,7 @@ namespace WEB_API_LAPTOP
 
         public static String connectionString;
         public DbSet<LoaiSanPham>? LoaiSanPhams { get; set; }
+        public DbSet<SanPham>? SanPhams { get; set; }
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             IConfigurationRoot configuration = new ConfigurationBuilder()
