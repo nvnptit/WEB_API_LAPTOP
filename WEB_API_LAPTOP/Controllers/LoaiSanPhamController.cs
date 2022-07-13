@@ -15,32 +15,41 @@ namespace WEB_API_LAPTOP.Controllers
     public class LoaiSanPhamController : ControllerBase
     {
         private readonly IConfiguration _configuration;
-        public LoaiSanPhamController(IConfiguration configuration)
+        private readonly BanLaptopEntities context;
+        public LoaiSanPhamController(IConfiguration configuration, BanLaptopEntities _context)
         {
             _configuration = configuration;
+            this.context = _context;
         }
 
         [HttpGet]
         public ActionResult getLoaiSanPham()
         {
-            BanLaptopEntities.connectionString = _configuration.GetConnectionString("DefaultConnection");
-            using(var context=new BanLaptopEntities())
+            try
             {
+                // BanLaptopEntities.connectionString = _configuration.GetConnectionString("DefaultConnection");
+                //var data = new SQLHelper().ExecuteString("Select * from LoaiSanPham");
+                //var json = JsonConvert.SerializeObject(data);
+                //var ret = JsonConvert.DeserializeObject<List<LoaiSanPham>>(json);
                 var data = context.LoaiSanPhams.ToList();
-             /*   var x = context.LoaiSanPhams.Where(x => x.RAM == "ff").OrderBy(x => x.MALSP).ToList();*/
                 return Ok(new { success = true, data = data });
+            }catch(Exception ex)
+            {
+                return new JsonResult(new
+                {
+                    message = ex.InnerException
+                })
+                { StatusCode = StatusCodes.Status403Forbidden };
             }
 
         }
         [HttpPost]
-        public ActionResult themLoaiSanPham(LoaiSanPham model)
+        public async Task<ActionResult> themLoaiSanPham(LoaiSanPham model)
         {
-            using (var context = new BanLaptopEntities())
-            {
                 var checkPK = context.LoaiSanPhams.Where(x => x.MALSP == model.MALSP).FirstOrDefault();
                 if (checkPK != null)
                 {
-                    return Ok(new { success = false, message = "Đã tồn tại khoá chính" });
+                    return Ok(new { success = false, message = "Đã tồn tại loại sản phầm này" });
                 }
                 var checkName= context.LoaiSanPhams.Where(x => x.TENLSP.ToLower().Trim() == model.TENLSP.ToLower().Trim()).FirstOrDefault();
                 if (checkName != null)
@@ -50,13 +59,48 @@ namespace WEB_API_LAPTOP.Controllers
                 context.LoaiSanPhams.Add(model);
                 context.SaveChanges();
                 return Ok(new { success = true, data = model });
-            }
+        }
+        [HttpPut]
+        public ActionResult chinhSuaLoaiSanPham(String maLSP, LoaiSanPham model)
+        {
+            //maLSP la maLSP cũ
+                var checkPK = context.LoaiSanPhams.Where(x => x.MALSP == model.MALSP && x.MALSP != maLSP).FirstOrDefault();
+                if (checkPK!= null){
+                    return Ok(new { success = false, message = "Đã tồn tại mã loại sản phẩm này" });
+                }
+                var checkName=context.LoaiSanPhams.Where(x=>x.TENLSP.ToLower().Trim()==model.TENLSP.ToLower().Trim()&& x.MALSP!=maLSP).FirstOrDefault();
+                if (checkName != null)
+                {
+                    return Ok(new { success = false, message = "Đã tồn tại tên loại sản phẩm này" });
+                }
+                var lsp=context.LoaiSanPhams.Where(x=>x.MALSP==maLSP).FirstOrDefault();
+                lsp.HARDDRIVE = model.HARDDRIVE;
+                lsp.ANHLSP = model.ANHLSP;
+                lsp.CPU = model.CPU;
+                lsp.TENLSP = model.TENLSP;
+                lsp.RAM=model.RAM;
+                lsp.MOTA=model.MOTA;
+                lsp.OS=model.OS;
+                lsp.CARDSCREEN=model.CARDSCREEN;
+                lsp.MAHANG = model.MAHANG;
+                lsp.SOLUONG = model.SOLUONG;
+                context.Entry(lsp).State = EntityState.Modified;
+                context.SaveChanges();
+                if (maLSP != model.MALSP.Trim())
+                {
+                    List<SqlParameter> param = new List<SqlParameter>();
+                    param.Add(new SqlParameter("@pk", maLSP));
+                    param.Add(new SqlParameter("@pk_Update", model.MALSP));
+                    param.Add(new SqlParameter("@table_Name", "LOAISANPHAM"));
+                    var execute = new SQLHelper().ExecuteQuery("sp_Update_PK",param);
+                }
+
+                return Ok(new { success = true, data=model});
+
         }
         [HttpDelete]
         public ActionResult xoaLoaiSanPham(String maLSP)
         {
-            using (var context = new BanLaptopEntities())
-            {
                 var checkSP = context.SanPhams.Where(x => x.MALSP == maLSP.Trim()).FirstOrDefault();
                 if (checkSP!= null){
                     return Ok(new { success = false, message = "Đã tồn tại sản phẩm của Loại SP này" });
@@ -65,7 +109,7 @@ namespace WEB_API_LAPTOP.Controllers
                 context.Entry(loaiSP).State = EntityState.Deleted;
                 context.SaveChanges();
                 return Ok(new { success = true, data = loaiSP });
-            }
+
         }
 
     }
