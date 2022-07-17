@@ -23,17 +23,14 @@ namespace WEB_API_LAPTOP.Controllers
         }
 
         [HttpGet]
-        public ActionResult getLoaiSanPham()
+        public ActionResult getFullLoaiSanPham()
         {
             try
             {
-                // BanLaptopEntities.connectionString = _configuration.GetConnectionString("DefaultConnection");
-                //var data = new SQLHelper().ExecuteString("Select * from LoaiSanPham");
-                //var json = JsonConvert.SerializeObject(data);
-                //var ret = JsonConvert.DeserializeObject<List<LoaiSanPham>>(json);
                 var data = context.LoaiSanPhams.ToList();
                 return Ok(new { success = true, data = data });
-            }catch(Exception ex)
+            }
+            catch (Exception ex)
             {
                 return new JsonResult(new
                 {
@@ -41,7 +38,43 @@ namespace WEB_API_LAPTOP.Controllers
                 })
                 { StatusCode = StatusCodes.Status403Forbidden };
             }
+        }
 
+        [HttpGet]
+        [Route("get-new-lsp")]
+        public ActionResult getLoaiSanPhamNew()
+        {
+            try
+            {
+                var data = context.LoaiSanPhams.Where(x => x.ISNEW == true).ToList();
+                return Ok(new { success = true, data = data });
+            }
+            catch (Exception ex)
+            {
+                return new JsonResult(new
+                {
+                    message = ex.InnerException
+                })
+                { StatusCode = StatusCodes.Status403Forbidden };
+            }
+        }
+        [HttpGet]
+        [Route("get-good-lsp")]
+        public ActionResult getLoaiSanPhamGoodDeal()
+        {
+            try
+            {
+                var data = context.LoaiSanPhams.Where(x => x.ISGOOD == true).ToList();
+                return Ok(new { success = true, data = data });
+            }
+            catch (Exception ex)
+            {
+                return new JsonResult(new
+                {
+                    message = ex.InnerException
+                })
+                { StatusCode = StatusCodes.Status403Forbidden };
+            }
         }
         [HttpPost]
         public async Task<ActionResult> themLoaiSanPham(LoaiSanPham model)

@@ -17,6 +17,7 @@ namespace WEB_API_LAPTOP
         public static String connectionString;
         public DbSet<LoaiSanPham>? LoaiSanPhams { get; set; }
         public DbSet<SanPham>? SanPhams { get; set; }
+        public DbSet<HangSX>? HangSXs { get; set; }
 
     }
 }

@@ -37,9 +37,9 @@ namespace WEB_API_LAPTOP.Controllers
             return BadRequest();
         }
         [HttpDelete]
-        public async Task<ActionResult> delSanPham(string serial, IFormFile file)
+        public async Task<ActionResult> delSanPham(string serial) // , IFormFile file
         {
-            if(file!=null)
+ /*           if(file!=null)
             {
                 var guid = new Guid();
                 string url = "/images/";
@@ -49,7 +49,7 @@ namespace WEB_API_LAPTOP.Controllers
                 {
                     await file.CopyToAsync(streamfile);
                 }
-            }    
+            }    */
             if (!string.IsNullOrEmpty(serial))
             {
                 var sanpham = context.SanPhams.FirstOrDefault(x => x.SERIAL.Trim().Equals(serial));

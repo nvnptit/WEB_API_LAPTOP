@@ -18,6 +18,8 @@ namespace WEB_API_LAPTOP.Models
         public String CARDSCREEN { get; set; }
         public String OS { get; set; }
         public int MAHANG { get; set; }
+        public Boolean ISNEW { get; set; }
+        public Boolean ISGOOD { get; set; }
 
 
     }
