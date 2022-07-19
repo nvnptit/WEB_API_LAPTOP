@@ -119,7 +119,7 @@ namespace WEB_API_LAPTOP.Controllers
                 List<SqlParameter> param = new List<SqlParameter>();
                 var data = new SQLHelper(_configuration).ExecuteQuery("sp_Get_LoaiSPGood", param);
                 var json = JsonConvert.SerializeObject(data);
-                var dataRet = JsonConvert.DeserializeObject<List<LoaiSanPhamViewKhuyenMaiModel>>(json);
+                var dataRet = JsonConvert.DeserializeObject<List<LoaiSanPhamViewModel>>(json);
                 return Ok(new { success = true, data = dataRet });
             }
             catch (Exception ex)
