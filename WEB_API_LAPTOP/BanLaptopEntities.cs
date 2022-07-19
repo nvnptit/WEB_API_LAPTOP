@@ -13,11 +13,15 @@ namespace WEB_API_LAPTOP
         {
 
         }
-
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<GiaThayDoi>().HasKey(c => new { c.NGAYAPDUNG, c.MALSP });
+        }
         public static String connectionString;
         public DbSet<LoaiSanPham>? LoaiSanPhams { get; set; }
         public DbSet<SanPham>? SanPhams { get; set; }
         public DbSet<HangSX>? HangSXs { get; set; }
+        public DbSet<GiaThayDoi>? GiayThayDois { get; set; }
 
     }
 }

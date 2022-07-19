@@ -5,7 +5,11 @@ namespace WEB_API_LAPTOP.Helper
 {
     public class SQLHelper
     {
-        private string connectionString = BanLaptopEntities.connectionString;
+        private readonly String connectionString;
+        public SQLHelper(IConfiguration configuration)
+        {
+            connectionString = configuration.GetConnectionString("DefaultConnection");
+        }
         public SqlConnection Connection()
         {
 
