@@ -27,9 +27,8 @@ namespace WEB_API_LAPTOP.Controllers
         {
             try
             {
-
                 List<SqlParameter> param = new List<SqlParameter>();
-                var data = new SQLHelper(_configuration).ExecuteQuery("sp_Get_LoaiSP", param);
+                var data = new SQLHelper(_configuration).ExecuteQuery("sp_Get_LoaiSPFull", param);
                 var json = JsonConvert.SerializeObject(data);
                 var dataRet = JsonConvert.DeserializeObject<List<LoaiSanPhamViewModel>>(json);
                 return Ok(new { success = true, data = dataRet });
@@ -50,8 +49,11 @@ namespace WEB_API_LAPTOP.Controllers
         {
             try
             {
-                var data = context.LoaiSanPhams.Where(x => x.ISNEW == true).ToList();
-                return Ok(new { success = true, data = data });
+                List<SqlParameter> param = new List<SqlParameter>();
+                var data = new SQLHelper(_configuration).ExecuteQuery("sp_Get_LoaiSPNew", param);
+                var json = JsonConvert.SerializeObject(data);
+                var dataRet = JsonConvert.DeserializeObject<List<LoaiSanPhamViewModel>>(json);
+                return Ok(new { success = true, data = dataRet });
             }
             catch (Exception ex)
             {
@@ -63,13 +65,62 @@ namespace WEB_API_LAPTOP.Controllers
             }
         }
         [HttpGet]
+        [Route("get-new-lsp")]
+        public ActionResult getLoaiSanPhamNew()
+        {
+            try
+            {
+                List<SqlParameter> param = new List<SqlParameter>();
+                var data = new SQLHelper(_configuration).ExecuteQuery("sp_Get_LoaiSPNew", param);
+                var json = JsonConvert.SerializeObject(data);
+                var dataRet = JsonConvert.DeserializeObject<List<LoaiSanPhamViewModel>>(json);
+                return Ok(new { success = true, data = dataRet });
+            }
+            catch (Exception ex)
+            {
+                return new JsonResult(new
+                {
+                    message = ex.InnerException
+                })
+                { StatusCode = StatusCodes.Status403Forbidden };
+            }
+        }
+
+
+        [HttpGet]
+        [Route("get-km-lsp")]
+        public ActionResult getLoaiSanPhamKM()
+        {
+            try
+            {
+                List<SqlParameter> param = new List<SqlParameter>();
+                var data = new SQLHelper(_configuration).ExecuteQuery("sp_Get_LoaiSPKhuyenMai", param);
+                var json = JsonConvert.SerializeObject(data);
+                var dataRet = JsonConvert.DeserializeObject<List<LoaiSanPhamViewKhuyenMaiModel>>(json);
+                return Ok(new { success = true, data = dataRet });
+            }
+            catch (Exception ex)
+            {
+                return new JsonResult(new
+                {
+                    message = ex.InnerException
+                })
+                { StatusCode = StatusCodes.Status403Forbidden };
+            }
+        }
+
+
+        [HttpGet]
         [Route("get-good-lsp")]
         public ActionResult getLoaiSanPhamGoodDeal()
         {
             try
             {
-                var data = context.LoaiSanPhams.Where(x => x.ISGOOD == true).ToList();
-                return Ok(new { success = true, data = data });
+                List<SqlParameter> param = new List<SqlParameter>();
+                var data = new SQLHelper(_configuration).ExecuteQuery("sp_Get_LoaiSPGood", param);
+                var json = JsonConvert.SerializeObject(data);
+                var dataRet = JsonConvert.DeserializeObject<List<LoaiSanPhamViewKhuyenMaiModel>>(json);
+                return Ok(new { success = true, data = dataRet });
             }
             catch (Exception ex)
             {
