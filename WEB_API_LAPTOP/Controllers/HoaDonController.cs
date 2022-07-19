@@ -24,7 +24,7 @@ namespace WEB_API_LAPTOP.Controllers
         }
 
         [HttpGet]
-        public ActionResult getHoaDon(String maHD)
+        public ActionResult getHoaDon(String? maHD)
         {
             //Kiểm tra xem có get bằng idGioHang hay không
             //Không thì lấy toàn bộ 
