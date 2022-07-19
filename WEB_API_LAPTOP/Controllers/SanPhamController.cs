@@ -23,47 +23,6 @@ namespace WEB_API_LAPTOP.Controllers
             this.context = _context;
         }
 
-        [HttpPut]
-        public async Task<ActionResult> editSanPham(SanPham sanPham)
-        {
-            if (sanPham != null)
-            {
-                context.Entry(sanPham).State = EntityState.Modified; // ý nghĩa dòng này e 31 32
-                int count = await context.SaveChangesAsync();
-                if (count > 0)
-                    return Ok(new { success = true, message = $"Chỉnh sửa thành công {sanPham.SERIAL}" });
-                return Ok(new { success = false, message = $"Chỉnh sửa thất bại {sanPham.SERIAL}" });
-            }
-            return BadRequest();
-        }
-        [HttpDelete]
-        public async Task<ActionResult> delSanPham(string serial) // , IFormFile file
-        {
- /*           if(file!=null)
-            {
-                var guid = new Guid();
-                string url = "/images/";
-                string filename = file.FileName;
-                string path = url + guid.ToString() + Path.GetExtension(filename);
-                using(var streamfile=new FileStream(path, FileMode.Create))
-                {
-                    await file.CopyToAsync(streamfile);
-                }
-            }    */
-            if (!string.IsNullOrEmpty(serial))
-            {
-                var sanpham = context.SanPhams.FirstOrDefault(x => x.SERIAL.Trim().Equals(serial));
-                if (sanpham == null)
-                    return NotFound();
-                 context.SanPhams.Remove(sanpham);
-                int count = await context.SaveChangesAsync();
-                if (count > 0)
-                    return Ok(new { success = true, message = $"xoá thành công {serial}" });
-                return Ok(new { success = false, message = $"xoá thất bại {serial}" });
-            }
-            return BadRequest();
-        }
-
         [HttpGet]
         public ActionResult getSanPham(string? SERIAL)
         {
@@ -97,5 +56,36 @@ namespace WEB_API_LAPTOP.Controllers
 
 
         }
-}
+
+        [HttpPut]
+        public async Task<ActionResult> editSanPham(SanPham sanPham)
+        {
+            if (sanPham != null)
+            {
+                context.Entry(sanPham).State = EntityState.Modified;
+                int count = await context.SaveChangesAsync();
+                if (count > 0)
+                    return Ok(new { success = true, message = $"Chỉnh sửa thành công {sanPham.SERIAL}" });
+                return Ok(new { success = false, message = $"Chỉnh sửa thất bại {sanPham.SERIAL}" });
+            }
+            return BadRequest();
+        }
+        [HttpDelete]
+        public async Task<ActionResult> delSanPham(string serial) // , IFormFile file
+        {
+            if (!string.IsNullOrEmpty(serial))
+            {
+                var sanpham = context.SanPhams.FirstOrDefault(x => x.SERIAL.Trim().Equals(serial));
+                if (sanpham == null)
+                    return NotFound();
+                context.SanPhams.Remove(sanpham);
+                int count = await context.SaveChangesAsync();
+                if (count > 0)
+                    return Ok(new { success = true, message = $"xoá thành công {serial}" });
+                return Ok(new { success = false, message = $"xoá thất bại {serial}" });
+            }
+            return BadRequest();
+        }
+
+    }
 }
