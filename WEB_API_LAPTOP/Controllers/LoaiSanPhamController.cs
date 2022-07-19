@@ -64,28 +64,6 @@ namespace WEB_API_LAPTOP.Controllers
                 { StatusCode = StatusCodes.Status403Forbidden };
             }
         }
-        [HttpGet]
-        [Route("get-new-lsp")]
-        public ActionResult getLoaiSanPhamNew()
-        {
-            try
-            {
-                List<SqlParameter> param = new List<SqlParameter>();
-                var data = new SQLHelper(_configuration).ExecuteQuery("sp_Get_LoaiSPNew", param);
-                var json = JsonConvert.SerializeObject(data);
-                var dataRet = JsonConvert.DeserializeObject<List<LoaiSanPhamViewModel>>(json);
-                return Ok(new { success = true, data = dataRet });
-            }
-            catch (Exception ex)
-            {
-                return new JsonResult(new
-                {
-                    message = ex.InnerException
-                })
-                { StatusCode = StatusCodes.Status403Forbidden };
-            }
-        }
-
 
         [HttpGet]
         [Route("get-km-lsp")]
