@@ -8,10 +8,10 @@ namespace WEB_API_LAPTOP.Models
     {
         [Key]
         public String MANV { get; set; }
-        public String? EMAIL { get; set; }
-        public String? TEN { get; set; }
-        public DateOnly? NGAYSINH { get; set; }
-        public String? SDT { get; set; }
+        public String EMAIL { get; set; }
+        public String TEN { get; set; }
+        public DateTime NGAYSINH { get; set; }
+        public String SDT { get; set; }
         public String? TENDANGNHAP { get; set; }
     }
 }
