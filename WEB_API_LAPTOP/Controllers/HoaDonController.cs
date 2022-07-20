@@ -34,7 +34,7 @@ namespace WEB_API_LAPTOP.Controllers
                 return Ok(new { success = true, data = lstHoaDons });
             }
             //Lấy thì lấy ra giỏ hàng có idGioHang là giá trị cần tìm
-            var hoaDon = context.HoaDons.FirstOrDefault(x => x.SOHD.Trim().Equals(maHD));
+            var hoaDon = context.HoaDons.FirstOrDefault(x => x.SOHD.Trim().Equals(maHD.Trim()));
             if (hoaDon != null)
                 return Ok(new { success = true, data = hoaDon });
             return Ok(new { success = true, message = "Không tồn tại hoá đơn này" });
@@ -71,7 +71,7 @@ namespace WEB_API_LAPTOP.Controllers
         {
             if (!string.IsNullOrEmpty(soHD))
             {
-                var hoaDon = context.HoaDons.FirstOrDefault(x => x.SOHD.Trim().Equals(soHD));
+                var hoaDon = context.HoaDons.FirstOrDefault(x => x.SOHD.Trim().Equals(soHD.Trim()));
                 if (hoaDon == null)
                     return NotFound();
                 context.HoaDons.Remove(hoaDon);

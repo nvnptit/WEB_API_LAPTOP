@@ -114,9 +114,9 @@ namespace WEB_API_LAPTOP.Controllers
         {
             LoaiSanPham modelAdd = new LoaiSanPham();
   
-            modelAdd.MALSP = model.MALSP;
+            modelAdd.MALSP = model.MALSP.Trim();
 
-            modelAdd.TENLSP = model.TENLSP;
+            modelAdd.TENLSP = model.TENLSP.Trim();
             modelAdd.SOLUONG = model.SOLUONG;
             // xử lý upload hình
             var file = model.ANHLSP;
@@ -135,23 +135,23 @@ namespace WEB_API_LAPTOP.Controllers
                 modelAdd.ANHLSP = "/images/noimage.png";
             }
 
-            modelAdd.MOTA = model.MOTA;
-            modelAdd.CPU = model.CPU;
-            modelAdd.RAM = model.RAM;
-            modelAdd.HARDDRIVE = model.HARDDRIVE;
-            modelAdd.CARDSCREEN = model.CARDSCREEN;
-            modelAdd.OS = model.OS;
+            modelAdd.MOTA = model.MOTA.Trim();
+            modelAdd.CPU = model.CPU.Trim();
+            modelAdd.RAM = model.RAM.Trim();
+            modelAdd.HARDDRIVE = model.HARDDRIVE.Trim();
+            modelAdd.CARDSCREEN = model.CARDSCREEN.Trim();
+            modelAdd.OS = model.OS.Trim();
             modelAdd.MAHANG = model.MAHANG;
             modelAdd.ISNEW = model.ISNEW;
             modelAdd.ISGOOD = model.ISGOOD;
 
 
-            var checkPK = context.LoaiSanPhams.Where(x => x.MALSP == model.MALSP).FirstOrDefault();
+            var checkPK = context.LoaiSanPhams.Where(x => x.MALSP == model.MALSP.Trim()).FirstOrDefault();
             if (checkPK != null)
             {
                 return Ok(new { success = false, message = "Đã tồn tại loại sản phầm này" });
             }
-            var checkName = context.LoaiSanPhams.Where(x => x.TENLSP.ToLower().Trim() == model.TENLSP.ToLower().Trim()).FirstOrDefault();
+            var checkName = context.LoaiSanPhams.Where(x => x.TENLSP.Trim().ToLower().Trim() == model.TENLSP.Trim().ToLower().Trim()).FirstOrDefault();
             if (checkName != null)
             {
                 return Ok(new { success = false, message = "Đã tồn tại tên sản phẩm" });
@@ -174,25 +174,25 @@ namespace WEB_API_LAPTOP.Controllers
         public ActionResult chinhSuaLoaiSanPham(String maLSP, LoaiSanPham model)
         {
             //maLSP la maLSP cũ
-            var checkPK = context.LoaiSanPhams.Where(x => x.MALSP == model.MALSP && x.MALSP != maLSP).FirstOrDefault();
+            var checkPK = context.LoaiSanPhams.Where(x => x.MALSP == model.MALSP && x.MALSP != maLSP.Trim()).FirstOrDefault();
             if (checkPK != null)
             {
                 return Ok(new { success = false, message = "Đã tồn tại mã loại sản phẩm này" });
             }
-            var checkName = context.LoaiSanPhams.Where(x => x.TENLSP.ToLower().Trim() == model.TENLSP.ToLower().Trim() && x.MALSP != maLSP).FirstOrDefault();
+            var checkName = context.LoaiSanPhams.Where(x => x.TENLSP.ToLower().Trim() == model.TENLSP.ToLower().Trim() && x.MALSP != maLSP.Trim()).FirstOrDefault();
             if (checkName != null)
             {
                 return Ok(new { success = false, message = "Đã tồn tại tên loại sản phẩm này" });
             }
-            var lsp = context.LoaiSanPhams.Where(x => x.MALSP == maLSP).FirstOrDefault();
-            lsp.HARDDRIVE = model.HARDDRIVE;
-            lsp.ANHLSP = model.ANHLSP;
-            lsp.CPU = model.CPU;
-            lsp.TENLSP = model.TENLSP;
-            lsp.RAM = model.RAM;
-            lsp.MOTA = model.MOTA;
-            lsp.OS = model.OS;
-            lsp.CARDSCREEN = model.CARDSCREEN;
+            var lsp = context.LoaiSanPhams.Where(x => x.MALSP == maLSP.Trim()).FirstOrDefault();
+            lsp.HARDDRIVE = model.HARDDRIVE.Trim();
+            lsp.ANHLSP = model.ANHLSP.Trim();
+            lsp.CPU = model.CPU.Trim();
+            lsp.TENLSP = model.TENLSP.Trim();
+            lsp.RAM = model.RAM.Trim();
+            lsp.MOTA = model.MOTA.Trim();
+            lsp.OS = model.OS.Trim();
+            lsp.CARDSCREEN = model.CARDSCREEN.Trim();
             lsp.MAHANG = model.MAHANG;
             lsp.SOLUONG = model.SOLUONG;
             context.Entry(lsp).State = EntityState.Modified;

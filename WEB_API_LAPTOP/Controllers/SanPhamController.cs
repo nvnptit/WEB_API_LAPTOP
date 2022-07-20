@@ -34,7 +34,7 @@ namespace WEB_API_LAPTOP.Controllers
                 return Ok(new { success = true, data = lstSanPhams });
             }
             //Lấy thì lấy ra sản phẩm có serial là giá trị cần tìm
-            var SanPham = context.SanPhams.FirstOrDefault(x => x.SERIAL.Trim().Equals(SERIAL));
+            var SanPham = context.SanPhams.FirstOrDefault(x => x.SERIAL.Trim().Equals(SERIAL.Trim()));
             if(SanPham!=null)
                  return Ok(new { success = true, data = SanPham });
             return Ok(new { success = true, message = "Không tồn tại sản phẩm này" });
@@ -42,7 +42,7 @@ namespace WEB_API_LAPTOP.Controllers
         [HttpPost]
         public ActionResult themSanPham(SanPham model)
         {
-                var checkPK = context.SanPhams.Where(x => x.SERIAL == model.SERIAL).FirstOrDefault();
+                var checkPK = context.SanPhams.Where(x => x.SERIAL == model.SERIAL.Trim()).FirstOrDefault();
                 if (checkPK != null)
                 {
                     return Ok(new { success = false, message = "Đã tồn tại khoá chính" });
@@ -75,7 +75,7 @@ namespace WEB_API_LAPTOP.Controllers
         {
             if (!string.IsNullOrEmpty(serial))
             {
-                var sanpham = context.SanPhams.FirstOrDefault(x => x.SERIAL.Trim().Equals(serial));
+                var sanpham = context.SanPhams.FirstOrDefault(x => x.SERIAL.Trim().Equals(serial.Trim()));
                 if (sanpham == null)
                     return NotFound();
                 context.SanPhams.Remove(sanpham);

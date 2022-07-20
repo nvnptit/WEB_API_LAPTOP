@@ -24,6 +24,10 @@ namespace WEB_API_LAPTOP
         public DbSet<GiaThayDoi>? GiayThayDois { get; set; }
         public DbSet<GioHang>? GioHangs { get; set; }
         public DbSet<HoaDon>? HoaDons { get; set; }
+        public DbSet<TaiKhoan>? TaiKhoans { get; set; }
+        public DbSet<Quyen>? Quyens { get; set; }
+        public DbSet<NhanVien>? NhanViens { get; set; }
+        public DbSet<KhachHang>? KhachHangs { get; set; }
 
     }
 }
