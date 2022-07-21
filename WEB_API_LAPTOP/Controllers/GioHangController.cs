@@ -44,12 +44,23 @@ namespace WEB_API_LAPTOP.Controllers
         [Route("gio-hang-byKH")]
         public ActionResult getGioHangbyKH(String cmnd)
         {
-            //Lấy thì lấy ra giỏ hàng có idGioHang là giá trị cần tìm
-            var lstgioHang = context.GioHangs.Where(x => x.CMND.Equals(cmnd.Trim()));
-            //lstgioHang foreach rồi kết với bảng để lấy seri + mã loại sản phẩm
-            //-> lấy ra thông tin sản phẩm trả về
-         //
-         return Ok(new { success = true, data = lstgioHang });
+            try
+            {
+                List<SqlParameter> param = new List<SqlParameter>();
+                param.Add(new SqlParameter("@cmnd", cmnd));
+                var data = new SQLHelper(_configuration).ExecuteQuery("sp_Get_GIOHANG_BYKH", param);
+                var json = JsonConvert.SerializeObject(data);
+                var dataRet = JsonConvert.DeserializeObject<List<GioHangViewModel>>(json);
+                return Ok(new { success = true, data = dataRet });
+            }
+            catch (Exception ex)
+            {
+                return new JsonResult(new
+                {
+                    message = ex.InnerException
+                })
+                { StatusCode = StatusCodes.Status403Forbidden };
+            }
         }
 
 
