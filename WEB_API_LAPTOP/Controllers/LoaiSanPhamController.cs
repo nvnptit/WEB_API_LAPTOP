@@ -50,6 +50,7 @@ namespace WEB_API_LAPTOP.Controllers
             try
             {
                 List<SqlParameter> param = new List<SqlParameter>();
+               
                 var data = new SQLHelper(_configuration).ExecuteQuery("sp_Get_LoaiSPNew", param);
                 var json = JsonConvert.SerializeObject(data);
                 var dataRet = JsonConvert.DeserializeObject<List<LoaiSanPhamViewModel>>(json);
@@ -109,6 +110,59 @@ namespace WEB_API_LAPTOP.Controllers
                 { StatusCode = StatusCodes.Status403Forbidden };
             }
         }
+
+
+        [HttpGet]
+        [Route("get-good-lsp-hang")]
+        public ActionResult getLoaiSanPhamGoodDealByHangSX(int maHang)
+        {
+            try
+            {
+                List<SqlParameter> param = new List<SqlParameter>();
+                param.Add(new SqlParameter("@maHang", maHang));
+                var data = new SQLHelper(_configuration).ExecuteQuery("sp_Get_LoaiSPGood_ByHangSX", param);
+                var json = JsonConvert.SerializeObject(data);
+                var dataRet = JsonConvert.DeserializeObject<List<LoaiSanPhamViewModel>>(json);
+                return Ok(new { success = true, data = dataRet });
+            }
+            catch (Exception ex)
+            {
+                return new JsonResult(new
+                {
+                    message = ex.InnerException
+                })
+                { StatusCode = StatusCodes.Status403Forbidden };
+            }
+        }
+
+
+        [HttpGet]
+        [Route("search")]
+        public ActionResult search(String? tenLSP, int? maHang, int? priceMin, int? priceMax)
+        {
+            try
+            {
+                List<SqlParameter> param = new List<SqlParameter>();
+                param.Add(new SqlParameter("@tenLSP", tenLSP));
+                param.Add(new SqlParameter("@maHang", maHang));
+                param.Add(new SqlParameter("@priceMin", priceMin));
+                param.Add(new SqlParameter("@priceMax", priceMax));
+                var data = new SQLHelper(_configuration).ExecuteQuery("TimKiem", param);
+                var json = JsonConvert.SerializeObject(data);
+                var dataRet = JsonConvert.DeserializeObject<List<LoaiSanPhamViewModel>>(json);
+                return Ok(new { success = true, data = dataRet });
+            }
+            catch (Exception ex)
+            {
+                return new JsonResult(new
+                {
+                    message = ex.InnerException
+                })
+                { StatusCode = StatusCodes.Status403Forbidden };
+            }
+        }
+
+
         [HttpPost]
         public IActionResult themLoaiSanPham([FromForm]LoaiSanPhamAddModel model)
         {
@@ -203,7 +257,7 @@ namespace WEB_API_LAPTOP.Controllers
                 param.Add(new SqlParameter("@pk", maLSP));
                 param.Add(new SqlParameter("@pk_Update", model.MALSP));
                 param.Add(new SqlParameter("@table_Name", "LOAISANPHAM"));
-                var execute = new SQLHelper(_configuration).ExecuteQuery("sp_Update_PK", param);
+                var execute = new SQLHelper(_configuration).ExecuteQuery("sp_Update_PK_LoaiSP", param);
             }
 
             return Ok(new { success = true, data = model });
