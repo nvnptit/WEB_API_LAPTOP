@@ -138,7 +138,7 @@ namespace WEB_API_LAPTOP.Controllers
 
         [HttpGet]
         [Route("search")]
-        public ActionResult search(String? tenLSP, int? maHang, int? priceMin, int? priceMax)
+        public ActionResult search(String? tenLSP,  int? priceMin,long? priceMax, int? maHang)
         {
             try
             {

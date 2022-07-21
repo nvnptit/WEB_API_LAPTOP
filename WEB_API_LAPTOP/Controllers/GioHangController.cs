@@ -39,8 +39,22 @@ namespace WEB_API_LAPTOP.Controllers
                 return Ok(new { success = true, data = gioHang });
             return Ok(new { success = true, message = "Không tồn tại giỏ hàng này" });
         }
+
+        [HttpGet]
+        [Route("gio-hang-byKH")]
+        public ActionResult getGioHangbyKH(String cmnd)
+        {
+            //Lấy thì lấy ra giỏ hàng có idGioHang là giá trị cần tìm
+            var lstgioHang = context.GioHangs.Where(x => x.CMND.Equals(cmnd.Trim()));
+            //lstgioHang foreach rồi kết với bảng để lấy seri + mã loại sản phẩm
+            //-> lấy ra thông tin sản phẩm trả về
+         //
+         return Ok(new { success = true, data = lstgioHang });
+        }
+
+
         [HttpPost]
-        public ActionResult themGioHang(GioHang model)
+        public ActionResult themGioHang(GioHang model, string maLSP)
         {
             var checkPK = context.GioHangs.Where(x => x.IDGIOHANG == model.IDGIOHANG).FirstOrDefault();
             if (checkPK != null)
@@ -49,16 +63,42 @@ namespace WEB_API_LAPTOP.Controllers
             }
             context.GioHangs.Add(model);
             context.SaveChanges();
+
+            // Lấy ra serial + cập nhật id giỏ hàng và loại sản phẩm vào
+            try
+            {
+                List<SqlParameter> param = new List<SqlParameter>();
+                param.Add(new SqlParameter("@maLSP", maLSP));
+                param.Add(new SqlParameter("@ID_GIO_HANG", model.IDGIOHANG));
+                var data = new SQLHelper(_configuration).ExecuteQuery("sp_Update_MuaSP", param);
+                var json = JsonConvert.SerializeObject(data);
+                var dataRet = JsonConvert.DeserializeObject<List<LoaiSanPhamViewModel>>(json);
+                return Ok(new { success = true, data = dataRet });
+            }
+            catch (Exception ex)
+            {
+                return new JsonResult(new
+                {
+                    message = ex.InnerException
+                })
+                { StatusCode = StatusCodes.Status403Forbidden };
+            }
+
             return Ok(new { success = true, data = model });
 
         }
 
         [HttpPut]
-        public async Task<ActionResult> editGioHang(GioHang gioHang)
+        public async Task<ActionResult> editGioHang(GioHangEditModel gioHang)
         {
             if (gioHang != null)
             {
-                context.Entry(gioHang).State = EntityState.Modified;
+
+                var exist = context.GioHangs.Where(x => x.IDGIOHANG == gioHang.IDGIOHANG).FirstOrDefault();
+                exist.MANVDUYET = gioHang.MANVDUYET;
+                exist.MANVGIAO=gioHang.MANVGIAO;
+
+                context.Entry(exist).State = EntityState.Modified;
                 int count = await context.SaveChangesAsync();
                 if (count > 0)
                     return Ok(new { success = true, message = $"Chỉnh sửa thành công {gioHang.IDGIOHANG}" });
