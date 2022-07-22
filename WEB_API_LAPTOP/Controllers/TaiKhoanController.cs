@@ -29,6 +29,11 @@ namespace WEB_API_LAPTOP.Controllers
         {
             //Lấy thì lấy ra giỏ hàng có idGioHang là giá trị cần tìm
             var taiKhoan = context.TaiKhoans.FirstOrDefault(x => x.TENDANGNHAP.Trim().Equals(tenDangNhap.Trim()) && x.MATKHAU.Trim().Equals(matKhau.Trim()));
+            if (!taiKhoan.KICHHOAT)
+            {
+                return Ok(new { success = true, message = "Tài khoản đã bị vô hiệu hoá" });
+            }
+            
             if (taiKhoan.MAQUYEN == 7)
             {
                 var khachHang = context.KhachHangs.FirstOrDefault(x => x.TENDANGNHAP.Trim().Equals(tenDangNhap.Trim()));
@@ -54,6 +59,7 @@ namespace WEB_API_LAPTOP.Controllers
             {
                 return Ok(new { success = false, message = "Đã tồn tại tên đăng nhập này" });
             }
+            model.KICHHOAT = true;
             context.TaiKhoans.Add(model);
             context.SaveChanges();
             return Ok(new { success = true, message = "Tạo tài khoản mới thành công" });

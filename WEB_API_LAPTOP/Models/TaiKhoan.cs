@@ -10,5 +10,6 @@ namespace WEB_API_LAPTOP.Models
         public String TENDANGNHAP { get; set; }
         public String MATKHAU { get; set; }
         public int MAQUYEN { get; set; }
+        public bool KICHHOAT { get; set; }
     }
 }
