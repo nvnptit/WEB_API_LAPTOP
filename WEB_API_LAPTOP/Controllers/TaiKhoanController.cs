@@ -24,7 +24,7 @@ namespace WEB_API_LAPTOP.Controllers
         }
 
         [Route("login")]
-        [HttpGet]
+        [HttpPost]
         public ActionResult checkLogin(String tenDangNhap, String matKhau)
         {
             //Lấy thì lấy ra giỏ hàng có idGioHang là giá trị cần tìm
@@ -45,6 +45,10 @@ namespace WEB_API_LAPTOP.Controllers
         [HttpPost]
         public ActionResult themTaiKhoan(TaiKhoan model)
         {
+            if (model.MAQUYEN == 0)
+            {
+                return Ok(new { success = false, message = "Quyền không tồn tại" });
+            }
             var checkPK = context.TaiKhoans.Where(x => x.TENDANGNHAP == model.TENDANGNHAP.Trim()).FirstOrDefault();
             if (checkPK != null)
             {
