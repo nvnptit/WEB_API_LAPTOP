@@ -5,6 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System.Data;
+using System.Text.RegularExpressions;
 using WEB_API_LAPTOP.Helper;
 using WEB_API_LAPTOP.Models;
 
@@ -21,6 +22,9 @@ namespace WEB_API_LAPTOP.Controllers
             _configuration = configuration;
             this.context = _context;
         }
+
+
+        
 
         [HttpGet]
         public ActionResult getFullLoaiSanPham()
@@ -135,15 +139,24 @@ namespace WEB_API_LAPTOP.Controllers
             }
         }
 
+        public static String chuanHoa(String s)
+        {
+            s = s.Trim();
+            Regex regex = new Regex("\\s+");
+            String kq = regex.Replace(s, " ");
+            return kq;
+        }
 
         [HttpGet]
         [Route("search")]
         public ActionResult search(String? tenLSP,  int? priceMin,long? priceMax, int? maHang)
         {
+            
             try
             {
                 List<SqlParameter> param = new List<SqlParameter>();
-                param.Add(new SqlParameter("@tenLSP", tenLSP));
+                param.Add(new SqlParameter("@tenLSP", chuanHoa(tenLSP)));
+                /*param.Add(new SqlParameter("@tenLSP", tenLSP));*/
                 param.Add(new SqlParameter("@maHang", maHang));
                 param.Add(new SqlParameter("@priceMin", priceMin));
                 param.Add(new SqlParameter("@priceMax", priceMax));
