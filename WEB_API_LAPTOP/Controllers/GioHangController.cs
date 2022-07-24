@@ -65,26 +65,57 @@ namespace WEB_API_LAPTOP.Controllers
 
 
         [HttpPost]
-        public ActionResult themGioHang(GioHang model, string maLSP)
+        public ActionResult themGioHang(GioHangAdd model1)
         {
+            GioHang model = new GioHang();
+            model.IDGIOHANG = model1.IDGIOHANG;
+            model.NGAYLAPGIOHANG = DateTime.Now;
+            model.TONGGIATRI = model1.TONGGIATRI;
+            model.MATRANGTHAI = model1.MATRANGTHAI;
+            model.CMND = model1.CMND;
+            model.MANVGIAO = model1.MANVGIAO;
+            model.NGUOINHAN = model1.NGUOINHAN;
+            model.DIACHI = model1.DIACHI;
+            model.SDT = model1.SDT;
+            model.EMAIL = model1.EMAIL;
+
+            String maLSP = model1.MALSP;
             var checkPK = context.GioHangs.Where(x => x.IDGIOHANG == model.IDGIOHANG).FirstOrDefault();
             if (checkPK != null)
             {
                 return Ok(new { success = false, message = "Đã tồn tại khoá chính" });
             }
+            var checkCMND = context.KhachHangs.Where(x => x.CMND == model.CMND).FirstOrDefault();
+            if (checkCMND == null)
+            {
+                return Ok(new { success = false, message = "Người dùng không tồn tại" });
+            }
             context.GioHangs.Add(model);
             context.SaveChanges();
 
             // Lấy ra serial + cập nhật id giỏ hàng và loại sản phẩm vào
+            Console.WriteLine(model.IDGIOHANG);
             try
             {
                 List<SqlParameter> param = new List<SqlParameter>();
                 param.Add(new SqlParameter("@maLSP", maLSP));
                 param.Add(new SqlParameter("@ID_GIO_HANG", model.IDGIOHANG));
-                var data = new SQLHelper(_configuration).ExecuteQuery("sp_Update_MuaSP", param);
-                var json = JsonConvert.SerializeObject(data);
-                var dataRet = JsonConvert.DeserializeObject<List<LoaiSanPhamViewModel>>(json);
-                return Ok(new { success = true, data = dataRet });
+              //  var data = new SQLHelper(_configuration).ExecuteQuery("sp_Update_MuaSP", param);
+                int kq = new SQLHelper(_configuration).ExecuteNoneQuery("sp_Update_MuaSP", param);
+                if (kq != 1)
+                {
+                    var gioHangold = context.GioHangs.FirstOrDefault(x => x.IDGIOHANG.Equals(model.IDGIOHANG));
+                    if (gioHangold != null)
+                    {
+                        context.GioHangs.Remove(gioHangold);
+                        context.SaveChanges();
+                    }
+                    return Ok(new { success = false, message = "Thêm giỏ hàng thất bại" });
+
+                }else
+                {
+                    return Ok(new { success = true, message = "Thành công" });
+                }
             }
             catch (Exception ex)
             {
@@ -124,12 +155,28 @@ namespace WEB_API_LAPTOP.Controllers
             {
                 var gioHang = context.GioHangs.FirstOrDefault(x => x.IDGIOHANG.Equals(idGioHang));
                 if (gioHang == null)
-                    return NotFound();
-                context.GioHangs.Remove(gioHang);
-                int count = await context.SaveChangesAsync();
-                if (count > 0)
-                    return Ok(new { success = true, message = $"xoá thành công" });
-                return Ok(new { success = false, message = $"xoá thất bại" });
+                {
+                    return Ok(new { success = false, message = "Giỏ hàng không tồn tại" });
+                }
+                if (gioHang.MATRANGTHAI== -1)
+                {
+                    try
+                    {
+                        List<SqlParameter> param = new List<SqlParameter>();
+                        param.Add(new SqlParameter("@ID_GIO_HANG", idGioHang));
+                        var data = new SQLHelper(_configuration).ExecuteQuery("sp_Delete_MuaSP", param);
+                        return Ok(new { success = true, message = "Xoá giỏ hàng thành công" });
+                    }
+                    catch (Exception ex)
+                    {
+                        return new JsonResult(new
+                        {
+                            message = ex.InnerException
+                        })
+                        { StatusCode = StatusCodes.Status403Forbidden };
+                    }
+                }
+                return Ok(new { success = true, message = $"Không thể xoá hoá đơn này" });
             }
             return BadRequest();
         }
