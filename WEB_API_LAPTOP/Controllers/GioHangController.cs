@@ -48,7 +48,7 @@ namespace WEB_API_LAPTOP.Controllers
             {
                 List<SqlParameter> param = new List<SqlParameter>();
                 param.Add(new SqlParameter("@cmnd", cmnd));
-                var data = new SQLHelper(_configuration).ExecuteQuery("sp_Get_GIOHANG_BYKH", param);
+                var data = new SQLHelper(_configuration).ExecuteQuery("sp_Get_GIOHANG_BYKHV2", param);
                 var json = JsonConvert.SerializeObject(data);
                 var dataRet = JsonConvert.DeserializeObject<List<GioHangViewModel>>(json);
                 return Ok(new { success = true, data = dataRet });

@@ -42,12 +42,14 @@ namespace WEB_API_LAPTOP.Models
         public String CPU { get; set; }
         public String RAM { get; set; }
         public String HARDDRIVE { get; set; }
-        public String CARDSCREEN { get; set; }
+        public String CARDSCREEN { get; set; } 
         public String OS { get; set; }
         public int MAHANG { get; set; }
         public Boolean ISNEW { get; set; }
         public Boolean ISGOOD { get; set; }
         public int GIAMOI { get; set; }
+        public int? PTGG { get; set; }
+        public int? GIAGIAM { get; set; }
         public String SERIAL { get; set; }
         public int? IDGIOHANG { get; set; }
 

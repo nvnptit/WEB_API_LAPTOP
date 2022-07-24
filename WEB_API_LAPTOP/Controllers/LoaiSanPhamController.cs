@@ -28,7 +28,7 @@ namespace WEB_API_LAPTOP.Controllers
             try
             {
                 List<SqlParameter> param = new List<SqlParameter>();
-                var data = new SQLHelper(_configuration).ExecuteQuery("sp_Get_LoaiSPFull", param);
+                var data = new SQLHelper(_configuration).ExecuteQuery("sp_Get_LoaiSPFullV2", param);
                 var json = JsonConvert.SerializeObject(data);
                 var dataRet = JsonConvert.DeserializeObject<List<LoaiSanPhamViewModel>>(json);
                 return Ok(new { success = true, data = dataRet });
@@ -51,7 +51,7 @@ namespace WEB_API_LAPTOP.Controllers
             {
                 List<SqlParameter> param = new List<SqlParameter>();
                
-                var data = new SQLHelper(_configuration).ExecuteQuery("sp_Get_LoaiSPNew", param);
+                var data = new SQLHelper(_configuration).ExecuteQuery("sp_Get_LoaiSPNewV2", param);
                 var json = JsonConvert.SerializeObject(data);
                 var dataRet = JsonConvert.DeserializeObject<List<LoaiSanPhamViewModel>>(json);
                 return Ok(new { success = true, data = dataRet });
@@ -75,7 +75,7 @@ namespace WEB_API_LAPTOP.Controllers
                 List<SqlParameter> param = new List<SqlParameter>();
                 var data = new SQLHelper(_configuration).ExecuteQuery("sp_Get_LoaiSPKhuyenMai", param);
                 var json = JsonConvert.SerializeObject(data);
-                var dataRet = JsonConvert.DeserializeObject<List<LoaiSanPhamViewKhuyenMaiModel>>(json);
+                var dataRet = JsonConvert.DeserializeObject<List<LoaiSanPhamViewModel>>(json);
                 return Ok(new { success = true, data = dataRet });
             }
             catch (Exception ex)
@@ -96,7 +96,7 @@ namespace WEB_API_LAPTOP.Controllers
             try
             {
                 List<SqlParameter> param = new List<SqlParameter>();
-                var data = new SQLHelper(_configuration).ExecuteQuery("sp_Get_LoaiSPGood", param);
+                var data = new SQLHelper(_configuration).ExecuteQuery("sp_Get_LoaiSPGoodV2", param);
                 var json = JsonConvert.SerializeObject(data);
                 var dataRet = JsonConvert.DeserializeObject<List<LoaiSanPhamViewModel>>(json);
                 return Ok(new { success = true, data = dataRet });
@@ -120,7 +120,7 @@ namespace WEB_API_LAPTOP.Controllers
             {
                 List<SqlParameter> param = new List<SqlParameter>();
                 param.Add(new SqlParameter("@maHang", maHang));
-                var data = new SQLHelper(_configuration).ExecuteQuery("sp_Get_LoaiSPGood_ByHangSX", param);
+                var data = new SQLHelper(_configuration).ExecuteQuery("sp_Get_LoaiSPGood_ByHangSXV2", param);
                 var json = JsonConvert.SerializeObject(data);
                 var dataRet = JsonConvert.DeserializeObject<List<LoaiSanPhamViewModel>>(json);
                 return Ok(new { success = true, data = dataRet });
@@ -147,7 +147,7 @@ namespace WEB_API_LAPTOP.Controllers
                 param.Add(new SqlParameter("@maHang", maHang));
                 param.Add(new SqlParameter("@priceMin", priceMin));
                 param.Add(new SqlParameter("@priceMax", priceMax));
-                var data = new SQLHelper(_configuration).ExecuteQuery("TimKiem", param);
+                var data = new SQLHelper(_configuration).ExecuteQuery("TimKiemV2", param);
                 var json = JsonConvert.SerializeObject(data);
                 var dataRet = JsonConvert.DeserializeObject<List<LoaiSanPhamViewModel>>(json);
                 return Ok(new { success = true, data = dataRet });
@@ -219,7 +219,7 @@ namespace WEB_API_LAPTOP.Controllers
             giaThayDoi.MALSP = model.MALSP;
             giaThayDoi.MANV = "NV2";
             
-            context.GiayThayDois.Add(giaThayDoi);
+            context.GiaThayDois.Add(giaThayDoi);
 
             context.SaveChanges();
             return Ok(new { success = true, data = modelAdd });

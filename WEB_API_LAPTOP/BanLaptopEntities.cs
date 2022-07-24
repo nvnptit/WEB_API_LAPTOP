@@ -21,7 +21,7 @@ namespace WEB_API_LAPTOP
         public DbSet<LoaiSanPham>? LoaiSanPhams { get; set; }
         public DbSet<SanPham>? SanPhams { get; set; }
         public DbSet<HangSX>? HangSXs { get; set; }
-        public DbSet<GiaThayDoi>? GiayThayDois { get; set; }
+        public DbSet<GiaThayDoi>? GiaThayDois { get; set; }
         public DbSet<GioHang>? GioHangs { get; set; }
         public DbSet<HoaDon>? HoaDons { get; set; }
         public DbSet<TaiKhoan>? TaiKhoans { get; set; }
