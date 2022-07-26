@@ -141,10 +141,14 @@ namespace WEB_API_LAPTOP.Controllers
 
         public static String chuanHoa(String s)
         {
-            s = s.Trim();
-            Regex regex = new Regex("\\s+");
-            String kq = regex.Replace(s, " ");
-            return kq;
+            if (s != null)
+            {
+                s = s.Trim();
+                Regex regex = new Regex("\\s+");
+                String kq = regex.Replace(s, " ");
+                return kq;
+            }
+            return "";
         }
 
         [HttpGet]
