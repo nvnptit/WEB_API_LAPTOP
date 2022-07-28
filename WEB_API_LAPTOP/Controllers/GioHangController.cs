@@ -129,7 +129,8 @@ namespace WEB_API_LAPTOP.Controllers
             return Ok(new { success = true, data = model });
 
         }
-
+        
+        
         [HttpPut]
         public async Task<ActionResult> editGioHang(GioHangEditModel gioHang)
         {
@@ -137,6 +138,35 @@ namespace WEB_API_LAPTOP.Controllers
             {
 
                 var exist = context.GioHangs.Where(x => x.IDGIOHANG == gioHang.IDGIOHANG).FirstOrDefault();
+                /* DateTime myDateTime = DateTime.Now;
+                 string sqlformatDate = myDateTime.ToString("yyyy-MM-dd HH:mm:ss.fff");*/
+
+                exist.NGAYLAPGIOHANG = DateTime.Now;
+                exist.TONGGIATRI = gioHang.TONGGIATRI;
+                exist.MATRANGTHAI = 0;
+                exist.NGUOINHAN = gioHang.NGUOINHAN;
+                exist.SDT = gioHang.SDT;
+                exist.EMAIL = gioHang.EMAIL;
+                exist.DIACHI = gioHang.DIACHI;
+
+                context.Entry(exist).State = EntityState.Modified;
+                int count = await context.SaveChangesAsync();
+                if (count > 0)
+                    return Ok(new { success = true, message = $"Chỉnh sửa thành công {gioHang.IDGIOHANG}" });
+                return Ok(new { success = false, message = $"Chỉnh sửa thất bại {gioHang.IDGIOHANG}" });
+            }
+            return BadRequest();
+        }
+
+        [Route("admin")]
+        [HttpPut]
+        public async Task<ActionResult> editGioHangAD(GioHangEditModel gioHang)
+        {
+            if (gioHang != null)
+            {
+
+                var exist = context.GioHangs.Where(x => x.IDGIOHANG == gioHang.IDGIOHANG).FirstOrDefault();
+                exist.MATRANGTHAI = gioHang.MATRANGTHAI;
                 exist.MANVDUYET = gioHang.MANVDUYET;
                 exist.MANVGIAO=gioHang.MANVGIAO;
 

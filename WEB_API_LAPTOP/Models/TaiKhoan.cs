@@ -12,4 +12,10 @@ namespace WEB_API_LAPTOP.Models
         public int MAQUYEN { get; set; }
         public bool KICHHOAT { get; set; }
     }
+    public class TaiKhoanLogin
+    {
+        public String TENDANGNHAP { get; set; }
+        public String MATKHAU { get; set; }
+
+    }
 }

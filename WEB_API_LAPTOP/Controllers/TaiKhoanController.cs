@@ -1,11 +1,6 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.Data.SqlClient;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
 using System.Data;
-using WEB_API_LAPTOP.Helper;
 using WEB_API_LAPTOP.Models;
 
 
@@ -25,27 +20,33 @@ namespace WEB_API_LAPTOP.Controllers
 
         [Route("login")]
         [HttpPost]
-        public ActionResult checkLogin(String tenDangNhap, String matKhau)
+        public ActionResult checkLogin(TaiKhoanLogin model)
         {
+            String tenDangNhap = model.TENDANGNHAP;
+            String matKhau = model.MATKHAU;
             //Lấy thì lấy ra giỏ hàng có idGioHang là giá trị cần tìm
             var taiKhoan = context.TaiKhoans.FirstOrDefault(x => x.TENDANGNHAP.Trim().Equals(tenDangNhap.Trim()) && x.MATKHAU.Trim().Equals(matKhau.Trim()));
-            if (!taiKhoan.KICHHOAT)
+            if (taiKhoan != null)
             {
-                return Ok(new { success = true, message = "Tài khoản đã bị vô hiệu hoá" });
+                if (!taiKhoan.KICHHOAT)
+                {
+                    return Ok(new { success = true, message = "Tài khoản đã bị vô hiệu hoá" });
+                }
+
+                if (taiKhoan.MAQUYEN == 7)
+                {
+                    var khachHang = context.KhachHangs.FirstOrDefault(x => x.TENDANGNHAP.Trim().Equals(tenDangNhap.Trim()));
+                    if (khachHang != null)
+                        return Ok(new { success = true, data = khachHang });
+                }
+                else
+                {
+                    var nhanVien = context.NhanViens.FirstOrDefault(x => x.TENDANGNHAP.Trim().Equals(tenDangNhap.Trim()));
+                    if (nhanVien != null)
+                        return Ok(new { success = true, data = nhanVien });
+                }
             }
-            
-            if (taiKhoan.MAQUYEN == 7)
-            {
-                var khachHang = context.KhachHangs.FirstOrDefault(x => x.TENDANGNHAP.Trim().Equals(tenDangNhap.Trim()));
-                if (khachHang != null)
-                    return Ok(new { success = true, data = khachHang });
-            } else
-            {
-                var nhanVien = context.NhanViens.FirstOrDefault(x => x.TENDANGNHAP.Trim().Equals(tenDangNhap.Trim()));
-                if (nhanVien != null)
-                    return Ok(new { success = true, data = nhanVien });
-            }
-            return Ok(new { success = true, message = "Không tồn tại tài khoản này" });
+            return Ok(new { success = false, message = "Tài khoản hoặc mật khẩu không đúng" });
         }
         [HttpPost]
         public ActionResult themTaiKhoan(TaiKhoan model)
