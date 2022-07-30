@@ -56,17 +56,27 @@ namespace WEB_API_LAPTOP.Controllers
         }
 
         [HttpPut]
-        public async Task<ActionResult> editKhachHang(KhachHang khachHang)
+        public async Task<ActionResult> editKhachHang(KhachHangEdit khachHang)
         {
+
             if (khachHang != null)
             {
-                context.Entry(khachHang).State = EntityState.Modified;
+
+                var exist = context.KhachHangs.Where(x => x.CMND == khachHang.CMND).FirstOrDefault();
+
+                exist.EMAIL = khachHang.EMAIL;
+                exist.TEN = khachHang.TEN;
+                exist.DIACHI = khachHang.DIACHI;
+                exist.NGAYSINH = khachHang.NGAYSINH;
+                exist.SDT = khachHang.SDT;
+
+                context.Entry(exist).State = EntityState.Modified;
                 int count = await context.SaveChangesAsync();
                 if (count > 0)
-                    return Ok(new { success = true, message = $"Chỉnh sửa thành công {khachHang.CMND}" });
-                return Ok(new { success = false, message = $"Chỉnh sửa thất bại {khachHang.CMND}" });
+                    return Ok(new { success = true, message = $"Chỉnh sửa thành công" });
+                return Ok(new { success = false, message = $"Chỉnh sửa thất bại" });
             }
-            return BadRequest();
+            return Ok(new { success = false, message = "Đã có lỗi xảy ra" });
         }
 
         [HttpDelete]

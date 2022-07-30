@@ -24,6 +24,7 @@ namespace WEB_API_LAPTOP.Controllers
         {
             String tenDangNhap = model.TENDANGNHAP;
             String matKhau = model.MATKHAU;
+
             //Lấy thì lấy ra giỏ hàng có idGioHang là giá trị cần tìm
             var taiKhoan = context.TaiKhoans.FirstOrDefault(x => x.TENDANGNHAP.Trim().Equals(tenDangNhap.Trim()) && x.MATKHAU.Trim().Equals(matKhau.Trim()));
             if (taiKhoan != null)
@@ -49,8 +50,13 @@ namespace WEB_API_LAPTOP.Controllers
             return Ok(new { success = false, message = "Tài khoản hoặc mật khẩu không đúng" });
         }
         [HttpPost]
-        public ActionResult themTaiKhoan(TaiKhoan model)
+        public ActionResult themTaiKhoan(TaiKhoanNew model)
         {
+            TaiKhoan tk = new TaiKhoan();
+            tk.TENDANGNHAP = model.TENDANGNHAP;
+            tk.MATKHAU = model.MATKHAU;
+            tk.MAQUYEN = model.MAQUYEN;
+            tk.KICHHOAT = true;
             if (model.MAQUYEN == 0)
             {
                 return Ok(new { success = false, message = "Quyền không tồn tại" });
@@ -60,8 +66,7 @@ namespace WEB_API_LAPTOP.Controllers
             {
                 return Ok(new { success = false, message = "Đã tồn tại tên đăng nhập này" });
             }
-            model.KICHHOAT = true;
-            context.TaiKhoans.Add(model);
+            context.TaiKhoans.Add(tk);
             context.SaveChanges();
             return Ok(new { success = true, message = "Tạo tài khoản mới thành công" });
 

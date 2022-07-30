@@ -155,7 +155,7 @@ namespace WEB_API_LAPTOP.Controllers
                     return Ok(new { success = true, message = $"Chỉnh sửa thành công {gioHang.IDGIOHANG}" });
                 return Ok(new { success = false, message = $"Chỉnh sửa thất bại {gioHang.IDGIOHANG}" });
             }
-            return BadRequest();
+            return Ok(new { success = false, message = "Đã có lỗi xảy ra" });
         }
 
         [Route("admin")]
@@ -206,7 +206,7 @@ namespace WEB_API_LAPTOP.Controllers
                         { StatusCode = StatusCodes.Status403Forbidden };
                     }
                 }
-                return Ok(new { success = true, message = $"Không thể xoá hoá đơn này" });
+                return Ok(new { success = false, message = $"Không thể xoá hoá đơn này" });
             }
             return BadRequest();
         }
