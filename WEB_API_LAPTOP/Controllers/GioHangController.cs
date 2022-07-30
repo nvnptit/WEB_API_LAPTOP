@@ -81,7 +81,7 @@ namespace WEB_API_LAPTOP.Controllers
             catch (Exception ex)
             {
 
-                return Ok(new { success = true, message= "Đã có lỗi xảy ra!" );
+                return Ok(new { success = true, message = "Đã có lỗi xảy ra!" });
             }
         }
 
