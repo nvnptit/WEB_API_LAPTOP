@@ -70,4 +70,19 @@ namespace WEB_API_LAPTOP.Models
         public String? EMAIL { get; set; }
         public String? MALSP { get; set; }
     }
+    public class HistoryOrder
+    {
+        public int? IDGIOHANG { get; set; }
+        public DateTime? NGAYLAPGIOHANG { get; set; }
+        public int? TONGGIATRI { get; set; }
+        public String? TENTRANGTHAI { get; set; }
+        public String? NVGIAO { get; set; }
+        public String? NVDUYET { get; set; }
+        public String? NGUOINHAN { get; set; }
+        public String? DIACHI { get; set; }
+        public String? SDT { get; set; }
+        public String? EMAIL { get; set; }
+    }
+
+    
 }
