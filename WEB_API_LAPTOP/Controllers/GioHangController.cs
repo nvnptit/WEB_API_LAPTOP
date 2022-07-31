@@ -65,7 +65,7 @@ namespace WEB_API_LAPTOP.Controllers
 
         [HttpGet]
         [Route("history-order")]
-        public ActionResult getHistoryOrder(String cmnd, String dateFrom, String dateTo)
+        public ActionResult getHistoryOrder(String cmnd, String? dateFrom, String? dateTo)
         {
             try
             {

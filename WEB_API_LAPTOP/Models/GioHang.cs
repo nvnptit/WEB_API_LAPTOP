@@ -82,6 +82,19 @@ namespace WEB_API_LAPTOP.Models
         public String? DIACHI { get; set; }
         public String? SDT { get; set; }
         public String? EMAIL { get; set; }
+
+        //LSP
+
+        public String? SERIAL { get; set; }
+        public String TENLSP { get; set; }
+        public string ANHLSP { get; set; }
+        public String MOTA { get; set; }
+        public String CPU { get; set; }
+        public String RAM { get; set; }
+        public String HARDDRIVE { get; set; }
+        public String CARDSCREEN { get; set; }
+        public String OS { get; set; }
+
     }
 
     
