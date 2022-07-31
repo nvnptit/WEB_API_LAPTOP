@@ -162,6 +162,7 @@ namespace WEB_API_LAPTOP.Controllers
                 var exist = context.GioHangs.Where(x => x.IDGIOHANG == gioHang.IDGIOHANG).FirstOrDefault();
                 /* DateTime myDateTime = DateTime.Now;
                  string sqlformatDate = myDateTime.ToString("yyyy-MM-dd HH:mm:ss.fff");*/
+                
 
                 exist.NGAYLAPGIOHANG = DateTime.Now;
                 exist.TONGGIATRI = gioHang.TONGGIATRI;
@@ -174,8 +175,18 @@ namespace WEB_API_LAPTOP.Controllers
                 context.Entry(exist).State = EntityState.Modified;
                 int count = await context.SaveChangesAsync();
                 if (count > 0)
+                {
+                    var sanpham = context.SanPhams.Where(x => x.IDGIOHANG == gioHang.IDGIOHANG).FirstOrDefault();
+                    var lsp = context.LoaiSanPhams.Where(x => x.MALSP == sanpham.MALSP).FirstOrDefault();
+                    lsp.SOLUONG = lsp.SOLUONG - 1;
+                    context.SaveChanges();
+
                     return Ok(new { success = true, message = $"Chỉnh sửa thành công {gioHang.IDGIOHANG}" });
-                return Ok(new { success = false, message = $"Chỉnh sửa thất bại {gioHang.IDGIOHANG}" });
+                }
+                else
+                {
+                    return Ok(new { success = false, message = $"Chỉnh sửa thất bại {gioHang.IDGIOHANG}" });
+                }
             }
             return Ok(new { success = false, message = "Đã có lỗi xảy ra" });
         }
