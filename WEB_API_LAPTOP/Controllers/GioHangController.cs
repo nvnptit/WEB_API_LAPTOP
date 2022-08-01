@@ -65,7 +65,7 @@ namespace WEB_API_LAPTOP.Controllers
 
         [HttpGet]
         [Route("history-order")]
-        public ActionResult getHistoryOrder(String cmnd, String? dateFrom, String? dateTo)
+        public ActionResult getHistoryOrder(String cmnd, String? dateFrom, String? dateTo, int? status)
         {
             try
             {
@@ -73,7 +73,29 @@ namespace WEB_API_LAPTOP.Controllers
                 param.Add(new SqlParameter("@cmnd", cmnd));
                 param.Add(new SqlParameter("@dateFrom", dateFrom));
                 param.Add(new SqlParameter("@dateTo", dateTo));
+                param.Add(new SqlParameter("@status", dateTo));
                 var data = new SQLHelper(_configuration).ExecuteQuery("sp_Get_Order", param);
+                var json = JsonConvert.SerializeObject(data);
+                var dataRet = JsonConvert.DeserializeObject<List<HistoryOrder>>(json);
+                return Ok(new { success = true, data = dataRet });
+            }
+            catch (Exception ex)
+            {
+
+                return Ok(new { success = true, message = "Đã có lỗi xảy ra!" });
+            }
+        }
+
+        [HttpGet]
+        [Route("doanh-thu")]
+        public ActionResult getDoanhThu(String? dateFrom, String? dateTo)
+        {
+            try
+            {
+                List<SqlParameter> param = new List<SqlParameter>();
+                param.Add(new SqlParameter("@dateFrom", dateFrom));
+                param.Add(new SqlParameter("@dateTo", dateTo));
+                var data = new SQLHelper(_configuration).ExecuteQuery("sp_Get_DoanhThu", param);
                 var json = JsonConvert.SerializeObject(data);
                 var dataRet = JsonConvert.DeserializeObject<List<HistoryOrder>>(json);
                 return Ok(new { success = true, data = dataRet });
