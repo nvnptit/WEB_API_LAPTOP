@@ -97,7 +97,7 @@ namespace WEB_API_LAPTOP.Controllers
                 param.Add(new SqlParameter("@dateTo", dateTo));
                 var data = new SQLHelper(_configuration).ExecuteQuery("sp_Get_DoanhThu", param);
                 var json = JsonConvert.SerializeObject(data);
-                var dataRet = JsonConvert.DeserializeObject<List<HistoryOrder>>(json);
+                var dataRet = JsonConvert.DeserializeObject<List<DoanhThu>>(json);
                 return Ok(new { success = true, data = dataRet });
             }
             catch (Exception ex)

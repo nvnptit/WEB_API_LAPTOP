@@ -96,6 +96,11 @@ namespace WEB_API_LAPTOP.Models
         public String OS { get; set; }
 
     }
+    public class DoanhThu
+    {
+        public int? THANG { get; set; }
+        public int? DOANHTHU { get; set; }
+    }
 
-    
+
 }
