@@ -65,7 +65,7 @@ namespace WEB_API_LAPTOP.Controllers
 
         [HttpGet]
         [Route("history-order")]
-        public ActionResult getHistoryOrder(String cmnd, String? dateFrom, String? dateTo, int? status)
+        public ActionResult getHistoryOrder(String? cmnd="", String? dateFrom="", String? dateTo=  "", int? status=-1)
         {
             try
             {
@@ -73,7 +73,7 @@ namespace WEB_API_LAPTOP.Controllers
                 param.Add(new SqlParameter("@cmnd", cmnd));
                 param.Add(new SqlParameter("@dateFrom", dateFrom));
                 param.Add(new SqlParameter("@dateTo", dateTo));
-                param.Add(new SqlParameter("@status", dateTo));
+                param.Add(new SqlParameter("@status", status));
                 var data = new SQLHelper(_configuration).ExecuteQuery("sp_Get_Order", param);
                 var json = JsonConvert.SerializeObject(data);
                 var dataRet = JsonConvert.DeserializeObject<List<HistoryOrder>>(json);
@@ -82,7 +82,7 @@ namespace WEB_API_LAPTOP.Controllers
             catch (Exception ex)
             {
 
-                return Ok(new { success = true, message = "Đã có lỗi xảy ra!" });
+                return Ok(new { success = false, message = "Đã có lỗi xảy ra!" });
             }
         }
 
