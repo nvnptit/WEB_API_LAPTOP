@@ -9,6 +9,7 @@ namespace WEB_API_LAPTOP.Models
         [Key]
         public int? IDGIOHANG { get; set; }
         public DateTime? NGAYLAPGIOHANG { get; set; }
+        public DateTime? NGAYDUKIEN { get; set; }
         public int? TONGGIATRI { get; set; }
         public int? MATRANGTHAI { get; set; }
         public String? CMND { get; set; }
@@ -23,6 +24,7 @@ namespace WEB_API_LAPTOP.Models
 
         public int? IDGIOHANG { get; set; }
         public DateTime? NGAYLAPGIOHANG { get; set; }
+        public DateTime? NGAYDUKIEN { get; set; }
         public int? TONGGIATRI { get; set; }
         public int? MATRANGTHAI { get; set; }
         public String? MANVGIAO { get; set; }
@@ -59,6 +61,7 @@ namespace WEB_API_LAPTOP.Models
     {
         public int? IDGIOHANG { get; set; }
         public DateTime? NGAYLAPGIOHANG { get; set; }
+        public DateTime? NGAYDUKIEN { get; set; }
         public int? TONGGIATRI { get; set; }
         public int? MATRANGTHAI { get; set; }
         public String? CMND { get; set; }
@@ -74,6 +77,7 @@ namespace WEB_API_LAPTOP.Models
     {
         public int? IDGIOHANG { get; set; }
         public DateTime? NGAYLAPGIOHANG { get; set; }
+        public DateTime? NGAYDUKIEN { get; set; }
         public int? TONGGIATRI { get; set; }
         public String? TENTRANGTHAI { get; set; }
         public String? NVGIAO { get; set; }

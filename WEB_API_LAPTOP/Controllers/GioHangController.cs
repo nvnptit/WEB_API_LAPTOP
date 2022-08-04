@@ -12,7 +12,7 @@ using WEB_API_LAPTOP.Models;
 namespace WEB_API_LAPTOP.Controllers
 {
     [Route("api/gio-hang")]
-    [ApiController]
+    [ApiController] 
     public class GioHangController : ControllerBase
     {
         private readonly IConfiguration _configuration;
@@ -114,6 +114,7 @@ namespace WEB_API_LAPTOP.Controllers
             GioHang model = new GioHang();
             model.IDGIOHANG = model1.IDGIOHANG;
             model.NGAYLAPGIOHANG = DateTime.Now;
+            model.NGAYDUKIEN = model1.NGAYDUKIEN;
             model.TONGGIATRI = model1.TONGGIATRI;
             model.MATRANGTHAI = model1.MATRANGTHAI;
             model.CMND = model1.CMND;
@@ -184,9 +185,10 @@ namespace WEB_API_LAPTOP.Controllers
                 var exist = context.GioHangs.Where(x => x.IDGIOHANG == gioHang.IDGIOHANG).FirstOrDefault();
                 /* DateTime myDateTime = DateTime.Now;
                  string sqlformatDate = myDateTime.ToString("yyyy-MM-dd HH:mm:ss.fff");*/
-                
+
 
                 exist.NGAYLAPGIOHANG = DateTime.Now;
+                exist.NGAYDUKIEN = gioHang.NGAYDUKIEN;
                 exist.TONGGIATRI = gioHang.TONGGIATRI;
                 exist.MATRANGTHAI = 0;
                 exist.NGUOINHAN = gioHang.NGUOINHAN;
