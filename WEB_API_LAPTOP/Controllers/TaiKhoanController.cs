@@ -24,7 +24,6 @@ namespace WEB_API_LAPTOP.Controllers
         {
             String tenDangNhap = model.TENDANGNHAP;
             String matKhau = model.MATKHAU;
-
             //Lấy thì lấy ra giỏ hàng có idGioHang là giá trị cần tìm
             var taiKhoan = context.TaiKhoans.FirstOrDefault(x => x.TENDANGNHAP.Trim().Equals(tenDangNhap.Trim()) && x.MATKHAU.Trim().Equals(matKhau.Trim()));
             if (taiKhoan != null)
@@ -36,15 +35,23 @@ namespace WEB_API_LAPTOP.Controllers
 
                 if (taiKhoan.MAQUYEN == 7)
                 {
+                    TaiKhoanKH tk = new TaiKhoanKH();
                     var khachHang = context.KhachHangs.FirstOrDefault(x => x.TENDANGNHAP.Trim().Equals(tenDangNhap.Trim()));
                     if (khachHang != null)
-                        return Ok(new { success = true, data = khachHang });
+                    {
+                        tk.setData(khachHang.CMND, khachHang.EMAIL, khachHang.TEN, khachHang.DIACHI, khachHang.NGAYSINH, khachHang.SDT, khachHang.TENDANGNHAP, taiKhoan.MAQUYEN);
+                    }
+                        return Ok(new { success = true, data = tk });
                 }
                 else
                 {
+                    TaiKhoanNV tk = new TaiKhoanNV();
                     var nhanVien = context.NhanViens.FirstOrDefault(x => x.TENDANGNHAP.Trim().Equals(tenDangNhap.Trim()));
                     if (nhanVien != null)
-                        return Ok(new { success = true, data = nhanVien });
+                    {
+                        tk.setData(nhanVien.MANV, nhanVien.EMAIL, nhanVien.TEN, nhanVien.NGAYSINH, nhanVien.SDT, nhanVien.TENDANGNHAP, taiKhoan.MAQUYEN);
+                    }
+                    return Ok(new { success = true, data = tk });
                 }
             }
             return Ok(new { success = false, message = "Tài khoản hoặc mật khẩu không đúng" });
