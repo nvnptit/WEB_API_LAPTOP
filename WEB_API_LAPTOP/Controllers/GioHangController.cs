@@ -224,7 +224,10 @@ namespace WEB_API_LAPTOP.Controllers
 
                 var exist = context.GioHangs.Where(x => x.IDGIOHANG == gioHang.IDGIOHANG).FirstOrDefault();
                 exist.MATRANGTHAI = gioHang.MATRANGTHAI;
-                exist.MANVDUYET = gioHang.MANVDUYET;
+                if (exist.MANVDUYET == null)
+                {
+                    exist.MANVDUYET = gioHang.MANVDUYET;
+                }
                 exist.MANVGIAO=gioHang.MANVGIAO;
 
                 context.Entry(exist).State = EntityState.Modified;

@@ -40,6 +40,45 @@ namespace WEB_API_LAPTOP.Controllers
             return Ok(new { success = true, message = "Không tồn tại nhân viên này" });
         }
 
+        [HttpGet]
+        [Route("NV-Duyet")]
+        public ActionResult getNhanVienDuyet()
+        {
+            try
+            {
+                List<SqlParameter> param = new List<SqlParameter>();
+
+                var data = new SQLHelper(_configuration).ExecuteQuery("get_NV_Duyet", param);
+                var json = JsonConvert.SerializeObject(data);
+                var dataRet = JsonConvert.DeserializeObject<List<NhanVien>>(json);
+                return Ok(new { success = true, data = dataRet });
+            }
+            catch (Exception ex)
+            {
+                return Ok(new { success = false, data = "Đã có lỗi xảy ra!" });
+            }
+        }
+
+
+        [HttpGet]
+        [Route("NV-Giaohang")]
+        public ActionResult getNhanVienGiaoHang()
+        {
+            try
+             {
+                List<SqlParameter> param = new List<SqlParameter>();
+
+                var data = new SQLHelper(_configuration).ExecuteQuery("get_NV_GiaoHang", param);
+                var json = JsonConvert.SerializeObject(data);
+                var dataRet = JsonConvert.DeserializeObject<List<NhanVien>>(json);
+                return Ok(new { success = true, data = dataRet });
+            }
+            catch (Exception ex)
+            {
+                return Ok(new { success = false, data = "Đã có lỗi xảy ra!" });
+            }
+        }
+
         [HttpPost]
         public ActionResult themNhanVien(NhanVien model)
         {
