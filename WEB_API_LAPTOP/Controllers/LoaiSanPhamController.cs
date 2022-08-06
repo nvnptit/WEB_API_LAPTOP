@@ -179,6 +179,31 @@ namespace WEB_API_LAPTOP.Controllers
             }
         }
 
+        [HttpPost]
+        [Route("uploadPicture")]
+        public IActionResult upload(IFormFile? fileUpload)
+        {
+            // xử lý upload hình
+            var url = "";
+            var file = fileUpload;
+            if (file != null)
+            {
+                String FileName = Guid.NewGuid().ToString() + file.FileName;
+                string filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/images/", FileName);
+                using (var stream = new FileStream(filePath, FileMode.Create))
+                {
+                    file.CopyTo(stream);
+                }
+               url = "/images/" + FileName;
+                return Ok(new { success = true, message = url });
+            }
+            else
+            {
+                url = "/images/noimage.png";
+                return Ok(new { success = true, message = url });
+            }
+                return Ok(new { success = false, message = "Tải ảnh thất bại" });
+        }
 
         [HttpPost]
         public IActionResult themLoaiSanPham([FromForm]LoaiSanPhamAddModel model)
@@ -241,6 +266,7 @@ namespace WEB_API_LAPTOP.Controllers
             context.SaveChanges();
             return Ok(new { success = true, data = modelAdd });
         }
+
         [HttpPut]
         public ActionResult chinhSuaLoaiSanPham(String maLSP, LoaiSanPham model)
         {
