@@ -103,6 +103,7 @@ namespace WEB_API_LAPTOP.Models
     public class DoanhThu
     {
         public int? THANG { get; set; }
+        public int? NAM { get; set; }
         public int? DOANHTHU { get; set; }
     }
 
