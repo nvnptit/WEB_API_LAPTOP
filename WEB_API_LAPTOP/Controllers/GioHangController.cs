@@ -87,6 +87,29 @@ namespace WEB_API_LAPTOP.Controllers
         }
 
         [HttpGet]
+        [Route("order-shipper")]
+        public ActionResult getOrderShipper(String? manv = "", String? dateFrom = "", String? dateTo = "", int? status = -1)
+        {
+            try
+            {
+                List<SqlParameter> param = new List<SqlParameter>();
+                param.Add(new SqlParameter("@manv", manv));
+                param.Add(new SqlParameter("@dateFrom", dateFrom));
+                param.Add(new SqlParameter("@dateTo", dateTo));
+                param.Add(new SqlParameter("@status", status));
+                var data = new SQLHelper(_configuration).ExecuteQuery("sp_Get_Order_Shipper", param);
+                var json = JsonConvert.SerializeObject(data);
+                var dataRet = JsonConvert.DeserializeObject<List<HistoryOrder>>(json);
+                return Ok(new { success = true, data = dataRet });
+            }
+            catch (Exception ex)
+            {
+
+                return Ok(new { success = false, message = "Đã có lỗi xảy ra!" });
+            }
+        }
+
+        [HttpGet]
         [Route("doanh-thu")]
         public ActionResult getDoanhThu(String? dateFrom, String? dateTo)
         {
@@ -238,6 +261,27 @@ namespace WEB_API_LAPTOP.Controllers
             }
             return BadRequest();
         }
+
+
+        [Route("shipper")]
+        [HttpPut]
+        public async Task<ActionResult> editGioHangShipper(GioHangEditModel gioHang)
+        {
+            if (gioHang != null)
+            {
+
+                var exist = context.GioHangs.Where(x => x.IDGIOHANG == gioHang.IDGIOHANG).FirstOrDefault();
+                exist.MATRANGTHAI = gioHang.MATRANGTHAI;
+
+                context.Entry(exist).State = EntityState.Modified;
+                int count = await context.SaveChangesAsync();
+                if (count > 0)
+                    return Ok(new { success = true, message = $"Hoàn tất đơn hàng số {gioHang.IDGIOHANG}" });
+                return Ok(new { success = false, message = $"Hoàn tất đơn hàng số {gioHang.IDGIOHANG}" });
+            }
+            return BadRequest();
+        }
+
         [HttpDelete]
         public async Task<ActionResult> delGioHang(int idGioHang)
         {
