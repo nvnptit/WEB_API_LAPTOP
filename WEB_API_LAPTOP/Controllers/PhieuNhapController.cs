@@ -39,6 +39,7 @@ namespace WEB_API_LAPTOP.Controllers
                 return Ok(new { success = true, data = phieu });
             return Ok(new { success = false, message = "Không tồn tại phiếu nhập" });
         }
+
         /* [HttpPost]
          public ActionResult themQuyen(Quyen model)
          {

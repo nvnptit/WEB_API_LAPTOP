@@ -14,4 +14,3 @@ namespace WEB_API_LAPTOP.Models
         public String MANV { get; set; }
     }
 }
-}
