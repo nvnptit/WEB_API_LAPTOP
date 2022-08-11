@@ -11,35 +11,35 @@ using WEB_API_LAPTOP.Models;
 
 namespace WEB_API_LAPTOP.Controllers
 {
-    [Route("api/quyen")]
+    [Route("api/ty-gia")]
     [ApiController]
-    public class QuyenController : ControllerBase
+    public class TyGiaController : ControllerBase
     {
         private readonly IConfiguration _configuration;
         private readonly BanLaptopEntities context;
-        public QuyenController(IConfiguration configuration, BanLaptopEntities _context)
+        public TyGiaController(IConfiguration configuration, BanLaptopEntities _context)
         {
             _configuration = configuration;
             this.context = _context;
         }
 
         [HttpGet]
-        public ActionResult getQuyen(int? maQuyen)
+        public ActionResult getTyGia(String? tyGia)
         {
             //Kiểm tra xem có get maQuyen
             //Không thì lấy toàn bộ 
-            if (maQuyen == null)
+            if (tyGia == null)
             {
-                var lstQuyens = context.Quyens.ToList();
-                return Ok(new { success = true, data = lstQuyens });
+                var lstTyGias = context.TyGias.ToList();
+                return Ok(new { success = true, data = lstTyGias });
             }
             //Lấy thì lấy ra giỏ hàng có idGioHang là giá trị cần tìm
-            var gioHang = context.Quyens.FirstOrDefault(x => x.MAQUYEN.Equals(maQuyen));
-            if (gioHang != null)
-                return Ok(new { success = true, data = gioHang });
-            return Ok(new { success = false, message = "Không tồn tại quyền này" });
+            var gia = context.TyGias.FirstOrDefault(x => x.MATG.Equals(tyGia));
+            if (gia != null)
+                return Ok(new { success = true, data = gia });
+            return Ok(new { success = false, message = "Không tồn tại tỷ giá" });
         }
-        [HttpPost]
+       /* [HttpPost]
         public ActionResult themQuyen(Quyen model)
         {
             var checkPK = context.Quyens.Where(x => x.MAQUYEN == model.MAQUYEN).FirstOrDefault();
@@ -82,7 +82,7 @@ namespace WEB_API_LAPTOP.Controllers
                 return Ok(new { success = false, message = $"xoá quyền thất bại" });
             }
             return BadRequest();
-        }
+        }*/
 
     }
 }

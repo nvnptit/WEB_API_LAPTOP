@@ -28,6 +28,8 @@ namespace WEB_API_LAPTOP
         public DbSet<Quyen>? Quyens { get; set; }
         public DbSet<NhanVien>? NhanViens { get; set; }
         public DbSet<KhachHang>? KhachHangs { get; set; }
+        public DbSet<TyGia>? TyGias { get; set; }
+        public DbSet<PhieuNhap>? PhieuNhaps { get; set; }
 
     }
 }
