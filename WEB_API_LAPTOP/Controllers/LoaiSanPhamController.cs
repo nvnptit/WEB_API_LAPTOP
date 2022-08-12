@@ -33,7 +33,7 @@ namespace WEB_API_LAPTOP.Controllers
                 param.Add(new SqlParameter("@BANG", "LOAISANPHAM"));
                 var data = new SQLHelper(_configuration).ExecuteQuery("LAY_MA", param);
                 var json = JsonConvert.SerializeObject(data);
-                var dataRet = JsonConvert.DeserializeObject<MaSo>(json);
+                var dataRet = JsonConvert.DeserializeObject<List<MaSo>>(json);
                 return Ok(new { success = true, data = dataRet });
             }
             catch (Exception ex)
