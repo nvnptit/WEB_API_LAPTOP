@@ -48,6 +48,11 @@ namespace WEB_API_LAPTOP.Controllers
                 return Ok(new { success = false, message = "Đã tồn tại khoá chính" });
             }
 
+            var checkName = context.HangSXs.Where(x => x.TENHANG == model.TENHANG).FirstOrDefault();
+            if (checkName != null)
+            {
+                return Ok(new { success = false, message = "Đã tồn tại hãng này" });
+            }
             context.HangSXs.Add(model);
             context.SaveChanges();
             return Ok(new { success = true, data = model });
@@ -60,6 +65,12 @@ namespace WEB_API_LAPTOP.Controllers
         {
             if (hangSX != null)
             {
+                var checkName = context.HangSXs.Where(x => x.TENHANG == hangSX.TENHANG).FirstOrDefault();
+                if (checkName != null)
+                {
+                    return Ok(new { success = false, message = "Đã tồn tại hãng này" });
+                }
+
                 context.Entry(hangSX).State = EntityState.Modified; // ý nghĩa dòng này e 31 32
                 int count = await context.SaveChangesAsync();
                 if (count > 0)

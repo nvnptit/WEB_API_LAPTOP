@@ -7,7 +7,7 @@ namespace WEB_API_LAPTOP.Models
     public class HangSX
     {
         [Key]
-        public int MAHANG { get; set; }
+        public int? MAHANG { get; set; }
         public String? TENHANG { get; set; }
         public String? EMAIL { get; set; }
         public String? SDT { get; set; }
