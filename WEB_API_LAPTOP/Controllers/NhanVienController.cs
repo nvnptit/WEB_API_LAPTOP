@@ -104,7 +104,19 @@ namespace WEB_API_LAPTOP.Controllers
             var checkPK = context.NhanViens.Where(x => x.MANV == model.MANV.Trim()).FirstOrDefault();
             if (checkPK != null)
             {
-                return Ok(new { success = false, message = "Đã tồn tại khoá chính" });
+                return Ok(new { success = false, message = "Đã tồn tại mã nhân viên này" });
+            }
+
+            var checkSDT = context.NhanViens.Where(x => x.SDT == model.SDT).FirstOrDefault();
+            if (checkSDT != null)
+            {
+                return Ok(new { success = false, message = "Lỗi trùng số điện thoại nhân viên" });
+            }
+
+            var checkEmail = context.NhanViens.Where(x => x.EMAIL.ToLower().Trim() == model.EMAIL.ToLower().Trim()).FirstOrDefault();
+            if (checkEmail != null)
+            {
+                return Ok(new { success = false, message = "Lỗi trùng email nhân viên" });
             }
 
             context.NhanViens.Add(model);
@@ -121,6 +133,19 @@ namespace WEB_API_LAPTOP.Controllers
         {
             if (nhanVien != null)
             {
+
+                var checkSDT = context.NhanViens.Where(x => x.SDT == nhanVien.SDT && x.MANV != nhanVien.MANV).FirstOrDefault();
+                if (checkSDT != null)
+                {
+                    return Ok(new { success = false, message = "Lỗi trùng số điện thoại nhân viên" });
+                }
+
+                var checkEmail = context.NhanViens.Where(x => x.EMAIL.ToLower().Trim() == nhanVien.EMAIL.ToLower().Trim() && x.MANV != nhanVien.MANV).FirstOrDefault();
+                if (checkEmail != null)
+                {
+                    return Ok(new { success = false, message = "Lỗi trùng email nhân viên" });
+                }
+
                 context.Entry(nhanVien).State = EntityState.Modified;
                 int count = await context.SaveChangesAsync();
                 if (count > 0)

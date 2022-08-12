@@ -223,16 +223,24 @@ namespace WEB_API_LAPTOP.Controllers
         }
 
         [HttpPost]
-        public IActionResult themLoaiSanPham([FromForm]LoaiSanPhamAddModel model)
+        public IActionResult themLoaiSanPham(LoaiSanPhamAddModel model) //[FromForm] LoaiSanPhamAddModel model
         {
+
+            var checkTenLSP = context.LoaiSanPhams.Where(x => x.TENLSP.ToLower().Trim() == model.TENLSP.ToLower().Trim()).FirstOrDefault();
+            if (checkTenLSP != null)
+            {
+                return Ok(new { success = false, message = "Lỗi đã tồn tại tên sản phẩm này" });
+            }
+
             LoaiSanPham modelAdd = new LoaiSanPham();
   
             modelAdd.MALSP = model.MALSP.Trim();
 
             modelAdd.TENLSP = model.TENLSP.Trim();
             modelAdd.SOLUONG = model.SOLUONG;
+
             // xử lý upload hình
-            var file = model.ANHLSP;
+            /*var file = model.ANHLSP;
             if (file != null)
             {
                 String FileName = Guid.NewGuid().ToString() + file.FileName;
@@ -246,7 +254,7 @@ namespace WEB_API_LAPTOP.Controllers
             else
             {
                 modelAdd.ANHLSP = "/images/noimage.png";
-            }
+            }*/
 
             modelAdd.MOTA = model.MOTA.Trim();
             modelAdd.CPU = model.CPU.Trim();
@@ -257,18 +265,17 @@ namespace WEB_API_LAPTOP.Controllers
             modelAdd.MAHANG = model.MAHANG;
             modelAdd.ISNEW = model.ISNEW;
             modelAdd.ISGOOD = model.ISGOOD;
-
-
+            /*
             var checkPK = context.LoaiSanPhams.Where(x => x.MALSP == model.MALSP.Trim()).FirstOrDefault();
             if (checkPK != null)
             {
                 return Ok(new { success = false, message = "Đã tồn tại loại sản phầm này" });
-            }
-            var checkName = context.LoaiSanPhams.Where(x => x.TENLSP.Trim().ToLower().Trim() == model.TENLSP.Trim().ToLower().Trim()).FirstOrDefault();
+            }*/
+          /*  var checkName = context.LoaiSanPhams.Where(x => x.TENLSP.Trim().ToLower().Trim() == model.TENLSP.Trim().ToLower().Trim()).FirstOrDefault();
             if (checkName != null)
             {
                 return Ok(new { success = false, message = "Đã tồn tại tên sản phẩm" });
-            }
+            }*/
             context.LoaiSanPhams.Add(modelAdd);
             context.SaveChanges();
             // Xử lý giá
@@ -276,7 +283,7 @@ namespace WEB_API_LAPTOP.Controllers
             giaThayDoi.GIAMOI = model.GIAMOI;
             giaThayDoi.NGAYAPDUNG = DateTime.Now;
             giaThayDoi.MALSP = model.MALSP;
-            giaThayDoi.MANV = "NV2";
+            giaThayDoi.MANV = model.MANV;
             
             context.GiaThayDois.Add(giaThayDoi);
 
@@ -288,17 +295,17 @@ namespace WEB_API_LAPTOP.Controllers
         public ActionResult chinhSuaLoaiSanPham(String maLSP, LoaiSanPham model)
         {
             //maLSP la maLSP cũ
-            var checkPK = context.LoaiSanPhams.Where(x => x.MALSP == model.MALSP && x.MALSP != maLSP.Trim()).FirstOrDefault();
+/*            var checkPK = context.LoaiSanPhams.Where(x => x.MALSP == model.MALSP && x.MALSP != maLSP.Trim()).FirstOrDefault();
             if (checkPK != null)
             {
                 return Ok(new { success = false, message = "Đã tồn tại mã loại sản phẩm này" });
-            }
+            }*/
             var checkName = context.LoaiSanPhams.Where(x => x.TENLSP.ToLower().Trim() == model.TENLSP.ToLower().Trim() && x.MALSP != maLSP.Trim()).FirstOrDefault();
             if (checkName != null)
             {
                 return Ok(new { success = false, message = "Đã tồn tại tên loại sản phẩm này" });
             }
-            var lsp = context.LoaiSanPhams.Where(x => x.MALSP == maLSP.Trim()).FirstOrDefault();
+            var lsp = context.LoaiSanPhams.Where(x => x.MALSP == model.MALSP.Trim()).FirstOrDefault();
             lsp.HARDDRIVE = model.HARDDRIVE.Trim();
             lsp.ANHLSP = model.ANHLSP.Trim();
             lsp.CPU = model.CPU.Trim();
@@ -311,14 +318,14 @@ namespace WEB_API_LAPTOP.Controllers
             lsp.SOLUONG = model.SOLUONG;
             context.Entry(lsp).State = EntityState.Modified;
             context.SaveChanges();
-            if (maLSP != model.MALSP.Trim())
+    /*        if (maLSP != model.MALSP.Trim())
             {
                 List<SqlParameter> param = new List<SqlParameter>();
                 param.Add(new SqlParameter("@pk", maLSP));
                 param.Add(new SqlParameter("@pk_Update", model.MALSP));
                 param.Add(new SqlParameter("@table_Name", "LOAISANPHAM"));
                 var execute = new SQLHelper(_configuration).ExecuteQuery("sp_Update_PK_LoaiSP", param);
-            }
+            }*/
 
             return Ok(new { success = true, data = model });
 

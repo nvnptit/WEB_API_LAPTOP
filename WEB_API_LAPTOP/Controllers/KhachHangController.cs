@@ -46,7 +46,19 @@ namespace WEB_API_LAPTOP.Controllers
             var checkPK = context.KhachHangs.Where(x => x.CMND == model.CMND.Trim()).FirstOrDefault();
             if (checkPK != null)
             {
-                return Ok(new { success = false, message = "Đã tồn tại khoá chính" });
+                return Ok(new { success = false, message = "Đã tồn tại số chứng minh nhân dân này" });
+            }
+
+            var checkSDT = context.KhachHangs.Where(x => x.SDT == model.SDT ).FirstOrDefault();
+            if (checkSDT != null)
+            {
+                return Ok(new { success = false, message = "Lỗi trùng số điện thoại khách hàng" });
+            }
+
+            var checkEmail = context.KhachHangs.Where(x => x.EMAIL.ToLower().Trim() == model.EMAIL.ToLower().Trim()).FirstOrDefault();
+            if (checkEmail != null)
+            {
+                return Ok(new { success = false, message = "Lỗi trùng email khách hàng" });
             }
 
             context.KhachHangs.Add(model);
@@ -61,6 +73,18 @@ namespace WEB_API_LAPTOP.Controllers
 
             if (khachHang != null)
             {
+
+                var checkSDT = context.KhachHangs.Where(x => x.SDT == khachHang.SDT && x.CMND != khachHang.CMND).FirstOrDefault();
+                if (checkSDT != null)
+                {
+                    return Ok(new { success = false, message = "Lỗi trùng số điện thoại khách hàng" });
+                }
+
+                var checkEmail = context.KhachHangs.Where(x => x.EMAIL.ToLower().Trim() == khachHang.EMAIL.ToLower().Trim() && x.CMND != khachHang.CMND).FirstOrDefault();
+                if (checkEmail != null)
+                {
+                    return Ok(new { success = false, message = "Lỗi trùng email khách hàng" });
+                }
 
                 var exist = context.KhachHangs.Where(x => x.CMND == khachHang.CMND).FirstOrDefault();
 

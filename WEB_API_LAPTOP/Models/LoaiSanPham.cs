@@ -40,6 +40,7 @@ namespace WEB_API_LAPTOP.Models
         public Boolean ISNEW { get; set; }
         public Boolean ISGOOD { get; set; }
         public int GIAMOI { get; set; }
+        public String MANV { get; set; }
 
 
     }

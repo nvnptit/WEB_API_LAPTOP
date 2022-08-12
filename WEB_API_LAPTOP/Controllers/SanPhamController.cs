@@ -42,10 +42,10 @@ namespace WEB_API_LAPTOP.Controllers
         [HttpPost]
         public ActionResult themSanPham(SanPham model)
         {
-                var checkPK = context.SanPhams.Where(x => x.SERIAL == model.SERIAL.Trim()).FirstOrDefault();
+                var checkPK = context.SanPhams.Where(x => x.SERIAL.ToLower().Trim() == model.SERIAL.ToLower().Trim()).FirstOrDefault();
                 if (checkPK != null)
                 {
-                    return Ok(new { success = false, message = "Đã tồn tại khoá chính" });
+                    return Ok(new { success = false, message = "Đã tồn tại số SERIAL này" });
                 }
                 
                 context.SanPhams.Add(model);

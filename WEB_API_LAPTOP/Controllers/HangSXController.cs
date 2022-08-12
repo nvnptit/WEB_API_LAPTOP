@@ -37,7 +37,7 @@ namespace WEB_API_LAPTOP.Controllers
             var hangSX = context.HangSXs.FirstOrDefault(x => x.MAHANG.Equals(maHang));
             if (hangSX != null)
                 return Ok(new { success = true, data = hangSX });
-            return Ok(new { success = true, message = "Không tồn tại sản phẩm này" });
+            return Ok(new { success = true, message = "Không tồn tại hãng này" });
         }
         [HttpPost]
         public ActionResult themHang(HangSX model)
@@ -48,10 +48,10 @@ namespace WEB_API_LAPTOP.Controllers
                 return Ok(new { success = false, message = "Đã tồn tại khoá chính" });
             }
 
-            var checkName = context.HangSXs.Where(x => x.TENHANG == model.TENHANG).FirstOrDefault();
+            var checkName = context.HangSXs.Where(x => x.TENHANG.ToLower().Trim() == model.TENHANG.ToLower().Trim()).FirstOrDefault();
             if (checkName != null)
             {
-                return Ok(new { success = false, message = "Đã tồn tại hãng này" });
+                return Ok(new { success = false, message = "Đã tồn tại tên hãng này" });
             }
             context.HangSXs.Add(model);
             context.SaveChanges();
@@ -65,10 +65,10 @@ namespace WEB_API_LAPTOP.Controllers
         {
             if (hangSX != null)
             {
-                var checkName = context.HangSXs.Where(x => x.TENHANG == hangSX.TENHANG).FirstOrDefault();
+                var checkName = context.HangSXs.Where(x => x.TENHANG.ToLower().Trim() == hangSX.TENHANG.ToLower().Trim()).FirstOrDefault();
                 if (checkName != null)
                 {
-                    return Ok(new { success = false, message = "Đã tồn tại hãng này" });
+                    return Ok(new { success = false, message = "Đã tồn tại tên hãng này" });
                 }
 
                 context.Entry(hangSX).State = EntityState.Modified; // ý nghĩa dòng này e 31 32
