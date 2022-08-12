@@ -65,7 +65,7 @@ namespace WEB_API_LAPTOP.Controllers
         {
             if (hangSX != null)
             {
-                var checkName = context.HangSXs.Where(x => x.TENHANG.ToLower().Trim() == hangSX.TENHANG.ToLower().Trim()).FirstOrDefault();
+                var checkName = context.HangSXs.Where(x => x.TENHANG.ToLower().Trim() == hangSX.TENHANG.ToLower().Trim() && x.MAHANG != hangSX.MAHANG).FirstOrDefault();
                 if (checkName != null)
                 {
                     return Ok(new { success = false, message = "Đã tồn tại tên hãng này" });

@@ -292,7 +292,7 @@ namespace WEB_API_LAPTOP.Controllers
         }
 
         [HttpPut]
-        public ActionResult chinhSuaLoaiSanPham(String maLSP, LoaiSanPham model)
+        public ActionResult chinhSuaLoaiSanPham(LoaiSanPham model)
         {
             //maLSP la maLSP cũ
 /*            var checkPK = context.LoaiSanPhams.Where(x => x.MALSP == model.MALSP && x.MALSP != maLSP.Trim()).FirstOrDefault();
@@ -300,7 +300,7 @@ namespace WEB_API_LAPTOP.Controllers
             {
                 return Ok(new { success = false, message = "Đã tồn tại mã loại sản phẩm này" });
             }*/
-            var checkName = context.LoaiSanPhams.Where(x => x.TENLSP.ToLower().Trim() == model.TENLSP.ToLower().Trim() && x.MALSP != maLSP.Trim()).FirstOrDefault();
+            var checkName = context.LoaiSanPhams.Where(x => x.TENLSP.ToLower().Trim() == model.TENLSP.ToLower().Trim() && x.MALSP != model.MALSP.Trim()).FirstOrDefault();
             if (checkName != null)
             {
                 return Ok(new { success = false, message = "Đã tồn tại tên loại sản phẩm này" });
@@ -317,17 +317,19 @@ namespace WEB_API_LAPTOP.Controllers
             lsp.MAHANG = model.MAHANG;
             lsp.SOLUONG = model.SOLUONG;
             context.Entry(lsp).State = EntityState.Modified;
-            context.SaveChanges();
-    /*        if (maLSP != model.MALSP.Trim())
-            {
-                List<SqlParameter> param = new List<SqlParameter>();
-                param.Add(new SqlParameter("@pk", maLSP));
-                param.Add(new SqlParameter("@pk_Update", model.MALSP));
-                param.Add(new SqlParameter("@table_Name", "LOAISANPHAM"));
-                var execute = new SQLHelper(_configuration).ExecuteQuery("sp_Update_PK_LoaiSP", param);
-            }*/
+            /*        if (maLSP != model.MALSP.Trim())
+                    {
+                        List<SqlParameter> param = new List<SqlParameter>();
+                        param.Add(new SqlParameter("@pk", maLSP));
+                        param.Add(new SqlParameter("@pk_Update", model.MALSP));
+                        param.Add(new SqlParameter("@table_Name", "LOAISANPHAM"));
+                        var execute = new SQLHelper(_configuration).ExecuteQuery("sp_Update_PK_LoaiSP", param);
+                    }*/
 
-            return Ok(new { success = true, data = model });
+            int count = context.SaveChanges(); 
+            if (count > 0)
+                return Ok(new { success = true, message = $"Chỉnh sửa thành công " });
+            return Ok(new { success = false, message = $"Chỉnh sửa thất bại" });
 
         }
         [HttpDelete]
