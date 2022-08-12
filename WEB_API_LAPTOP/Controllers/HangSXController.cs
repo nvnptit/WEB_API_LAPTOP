@@ -71,6 +71,20 @@ namespace WEB_API_LAPTOP.Controllers
                     return Ok(new { success = false, message = "Đã tồn tại tên hãng này" });
                 }
 
+                var checkSDT = context.HangSXs.Where(x => x.SDT == hangSX.SDT && x.MAHANG != hangSX.MAHANG).FirstOrDefault();
+                if (checkSDT != null)
+                {
+                    return Ok(new { success = false, message = "Lỗi trùng số điện thoại hãng khác" });
+                }
+
+                var checkEmail = context.HangSXs.Where(x => x.EMAIL.ToLower().Trim() == hangSX.EMAIL.ToLower().Trim() && x.MAHANG != hangSX.MAHANG).FirstOrDefault();
+                if (checkEmail != null)
+                {
+                    return Ok(new { success = false, message = "Lỗi trùng email hãng khác" });
+                }
+
+
+
                 context.Entry(hangSX).State = EntityState.Modified; // ý nghĩa dòng này e 31 32
                 int count = await context.SaveChangesAsync();
                 if (count > 0)
