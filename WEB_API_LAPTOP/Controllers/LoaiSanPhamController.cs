@@ -23,8 +23,25 @@ namespace WEB_API_LAPTOP.Controllers
             this.context = _context;
         }
 
+        [Route("MALSP")]
+        [HttpGet]
+        public ActionResult getMaLSP()
+        {
+            try
+            {
+                List<SqlParameter> param = new List<SqlParameter>();
+                param.Add(new SqlParameter("@BANG", "LOAISANPHAM"));
+                var data = new SQLHelper(_configuration).ExecuteQuery("LAY_MA", param);
+                var json = JsonConvert.SerializeObject(data);
+                var dataRet = JsonConvert.DeserializeObject<MaSo>(json);
+                return Ok(new { success = true, data = dataRet });
+            }
+            catch (Exception ex)
+            {
+                return Ok(new { success = false, data = "Đã có lỗi xảy ra!" });
+            }
+        }
 
-        
 
         [HttpGet]
         public ActionResult getFullLoaiSanPham()
