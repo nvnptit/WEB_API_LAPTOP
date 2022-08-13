@@ -69,4 +69,10 @@ namespace WEB_API_LAPTOP.Models
             MAQUYEN = maquyen;
         }
     }
+    public class TaiKhoanQuyenKichHoat
+    {
+        public String TENDANGNHAP { get; set; }
+        public int MAQUYEN { get; set; }
+        public bool KICHHOAT { get; set; }
+    }
 }

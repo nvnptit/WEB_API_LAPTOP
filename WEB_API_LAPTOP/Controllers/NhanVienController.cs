@@ -43,20 +43,24 @@ namespace WEB_API_LAPTOP.Controllers
         }
 
         [HttpGet]
-        public ActionResult getNhanVien(string? maNV)
+        public ActionResult getNhanVien()
         {
-            //Kiểm tra xem có get bằng serial hay không
-            //Không thì lấy toàn bộ sản phẩm
-            if (string.IsNullOrEmpty(maNV))
+            try
             {
-                var lstNhanViens = context.NhanViens.ToList();
-                return Ok(new { success = true, data = lstNhanViens });
+                List<SqlParameter> param = new List<SqlParameter>();
+                var data = new SQLHelper(_configuration).ExecuteQuery("spGetNhanVien", param);
+                var json = JsonConvert.SerializeObject(data);
+                var dataRet = JsonConvert.DeserializeObject<List<NhanVienView>>(json);
+                return Ok(new { success = true, data = dataRet });
             }
-            //Lấy thì lấy ra sản phẩm có serial là giá trị cần tìm
-            var nhanVien = context.NhanViens.FirstOrDefault(x => x.MANV.Trim().Equals(maNV.Trim()));
-            if (nhanVien != null)
-                return Ok(new { success = true, data = nhanVien });
-            return Ok(new { success = false, message = "Không tồn tại nhân viên này" });
+            catch (Exception ex)
+            {
+                return new JsonResult(new
+                {
+                    message = ex.InnerException
+                })
+                { StatusCode = StatusCodes.Status403Forbidden };
+            }
         }
 
         [HttpGet]

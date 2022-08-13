@@ -1,7 +1,11 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Data.SqlClient;
 using System.Data;
 using WEB_API_LAPTOP.Models;
+using WEB_API_LAPTOP.Helper;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 
 
 namespace WEB_API_LAPTOP.Controllers
@@ -93,7 +97,36 @@ namespace WEB_API_LAPTOP.Controllers
             }
             return BadRequest();
         }
-        
+        [Route("Quyen")]
+        [HttpPut]
+        public async Task<ActionResult> thayQuyen(TaiKhoanQuyenKichHoat model)
+        {
+
+            try
+            {
+                List<SqlParameter> param = new List<SqlParameter>();
+                param.Add(new SqlParameter("@tendangnhap", model.TENDANGNHAP));
+                param.Add(new SqlParameter("@maquyen", model.MAQUYEN));
+                param.Add(new SqlParameter("@kichhoat", model.KICHHOAT));
+                var data = new SQLHelper(_configuration).ExecuteQuery("spUpdateQuyen_KichHoat", param);
+                return Ok(new { success = true, data = "Cập nhật quyền và trạng thái thành công" });
+            }
+            catch (Exception ex)
+            {
+                return Ok(new { success = false, data = "Đã có lỗi xảy ra!" });
+            }
+
+            /*if (model != null)
+            {
+                context.Entry(model).State = EntityState.Modified;
+                int count = await context.SaveChangesAsync();
+                if (count > 0)
+                    return Ok(new { success = true, message = $"Thay đổi thành công" });
+                return Ok(new { success = false, message = $"Thay đổi thất bại " });
+            }
+            return BadRequest();*/
+        }
+
         [HttpDelete]
         public async Task<ActionResult> delTaiKhoan(String tenDangNhap)
         {
