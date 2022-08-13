@@ -108,8 +108,9 @@ namespace WEB_API_LAPTOP.Controllers
                 param.Add(new SqlParameter("@tendangnhap", model.TENDANGNHAP));
                 param.Add(new SqlParameter("@maquyen", model.MAQUYEN));
                 param.Add(new SqlParameter("@kichhoat", model.KICHHOAT));
+
                 var data = new SQLHelper(_configuration).ExecuteQuery("spUpdateQuyen_KichHoat", param);
-                return Ok(new { success = true, data = "Cập nhật quyền và trạng thái thành công" });
+                return Ok(new { success = true, message = "Cập nhật quyền và trạng thái thành công" });
             }
             catch (Exception ex)
             {
