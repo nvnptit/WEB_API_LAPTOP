@@ -28,7 +28,6 @@ namespace WEB_API_LAPTOP.Controllers
         {
             String tenDangNhap = model.TENDANGNHAP;
             String matKhau = model.MATKHAU;
-            //Lấy thì lấy ra giỏ hàng có idGioHang là giá trị cần tìm
             var taiKhoan = context.TaiKhoans.FirstOrDefault(x => x.TENDANGNHAP.Trim().Equals(tenDangNhap.Trim()) && x.MATKHAU.Trim().Equals(matKhau.Trim()));
             if (taiKhoan != null)
             {
