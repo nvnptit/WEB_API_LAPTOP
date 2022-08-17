@@ -4,8 +4,6 @@ using Microsoft.Data.SqlClient;
 using System.Data;
 using WEB_API_LAPTOP.Models;
 using WEB_API_LAPTOP.Helper;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
 
 
 namespace WEB_API_LAPTOP.Controllers
