@@ -112,11 +112,18 @@ namespace WEB_API_LAPTOP.Controllers
                 var hangSX = context.HangSXs.FirstOrDefault(x => x.MAHANG.Equals(maHang));
                 if (hangSX == null)
                     return Ok(new { success = false, message = $"Mã hãng sản xuất không được để trống" });
-                context.HangSXs.Remove(hangSX);
-                int count = await context.SaveChangesAsync();
-                if (count > 0)
-                    return Ok(new { success = true, message = $"Xoá hãng thành công!" });
-                return Ok(new { success = false, message = $"Đã có lỗi xảy ra khi xoá!" });
+                try
+                {
+                    context.HangSXs.Remove(hangSX);
+
+                    int count = await context.SaveChangesAsync();
+                    if (count > 0)
+                        return Ok(new { success = true, message = $"Xoá hãng thành công!" });
+                    return Ok(new { success = false, message = $"Đã có lỗi xảy ra khi xoá!" });
+                }
+                catch (Exception e) {
+                    return Ok(new { success = false, message = $"Không thể xoá hãng sản xuất này" });
+                }
             }
             return Ok(new { success = false, message = $"Không thể xoá hãng sản xuất này" });
         }
