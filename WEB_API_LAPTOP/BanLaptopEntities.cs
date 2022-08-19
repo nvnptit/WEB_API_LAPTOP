@@ -5,14 +5,8 @@ namespace WEB_API_LAPTOP
 {
     public class BanLaptopEntities : DbContext
     {
-        public BanLaptopEntities()
-        {
-
-        }
-        public BanLaptopEntities(DbContextOptions<BanLaptopEntities> options) : base(options)
-        {
-
-        }
+        public BanLaptopEntities() {}
+        public BanLaptopEntities(DbContextOptions<BanLaptopEntities> options) : base(options) {}
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<GiaThayDoi>().HasKey(c => new { c.NGAYAPDUNG, c.MALSP });
