@@ -160,20 +160,29 @@ namespace WEB_API_LAPTOP.Controllers
         }
 
         [HttpDelete]
-        public async Task<ActionResult> delNhanVien(string maNV) // , IFormFile file
+        public async Task<ActionResult> delNhanVien(string? maNV) // , IFormFile file
         {
-            if (!string.IsNullOrEmpty(maNV))
+            if (maNV == null)
             {
+                return Ok(new { success = false, message = "Mã nhân viên không được để trống" });
+            }
                 var nhanVien = context.NhanViens.FirstOrDefault(x => x.MANV.Trim().Equals(maNV.Trim()));
                 if (nhanVien == null)
-                    return NotFound();
-                context.NhanViens.Remove(nhanVien);
-                int count = await context.SaveChangesAsync();
-                if (count > 0)
-                    return Ok(new { success = true, message = $"xoá thành công nhân viên" });
-                return Ok(new { success = false, message = $"xoá thất bại nhân viên" });
-            }
-            return BadRequest();
+                    return Ok(new { success = false, message = "Mã nhân viên không tồn tại" });
+                try
+                {
+                    context.NhanViens.Remove(nhanVien);
+
+                    int count = await context.SaveChangesAsync();
+                    if (count > 0)
+                        return Ok(new { success = true, message = "xoá thành công nhân viên" });
+                    return Ok(new { success = false, message = "Đã có lỗi xảy ra khi xoá!" });
+                }
+                catch (Exception e)
+                {
+                    return Ok(new { success = false, message = "Không thể xoá nhân viên này" });
+                }
+            return Ok(new { success = false, message = "Không thể xoá nhân viên này" });
         }
 
     }

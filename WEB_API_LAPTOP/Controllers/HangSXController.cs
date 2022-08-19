@@ -96,36 +96,25 @@ namespace WEB_API_LAPTOP.Controllers
         [HttpDelete]
         public async Task<ActionResult> delHang(int? maHang) // , IFormFile file
         {
-            /*           if(file!=null)
-                       {
-                           var guid = new Guid();
-                           string url = "/images/";
-                           string filename = file.FileName;
-                           string path = url + guid.ToString() + Path.GetExtension(filename);
-                           using(var streamfile=new FileStream(path, FileMode.Create))
-                           {
-                               await file.CopyToAsync(streamfile);
-                           }
-                       }    */
-            if (maHang != null)
+            if (maHang == null)
             {
-                var hangSX = context.HangSXs.FirstOrDefault(x => x.MAHANG.Equals(maHang));
+                   return Ok(new { success = false, message = "Mã hãng sản xuất không được để trống" });
+            }
+            var hangSX = context.HangSXs.FirstOrDefault(x => x.MAHANG.Equals(maHang));
                 if (hangSX == null)
-                    return Ok(new { success = false, message = $"Mã hãng sản xuất không được để trống" });
-                try
+                return Ok(new { success = false, message = "Mã hãng sản xuất không tồn tại" });
+            try
                 {
                     context.HangSXs.Remove(hangSX);
 
                     int count = await context.SaveChangesAsync();
                     if (count > 0)
-                        return Ok(new { success = true, message = $"Xoá hãng thành công!" });
-                    return Ok(new { success = false, message = $"Đã có lỗi xảy ra khi xoá!" });
+                        return Ok(new { success = true, message = "Xoá hãng thành công!" });
+                    return Ok(new { success = false, message = "Đã có lỗi xảy ra khi xoá!" });
                 }
                 catch (Exception e) {
-                    return Ok(new { success = false, message = $"Không thể xoá hãng sản xuất này" });
+                    return Ok(new { success = false, message = "Không thể xoá hãng sản xuất này" });
                 }
-            }
-            return Ok(new { success = false, message = $"Không thể xoá hãng sản xuất này" });
         }
 
     }

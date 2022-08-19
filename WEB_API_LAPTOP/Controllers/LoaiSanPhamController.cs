@@ -333,17 +333,29 @@ namespace WEB_API_LAPTOP.Controllers
 
         }
         [HttpDelete]
-        public ActionResult xoaLoaiSanPham(String maLSP)
+        public async Task<ActionResult> xoaLoaiSanPham(String? maLSP)
         {
-            var checkSP = context.SanPhams.Where(x => x.MALSP == maLSP.Trim()).FirstOrDefault();
-            if (checkSP != null)
+            if (maLSP == null)
             {
-                return Ok(new { success = false, message = "Đã tồn tại sản phẩm của Loại SP này" });
+                return Ok(new { success = false, message = "Mã loại sản phẩm không được để trống" });
             }
-            var loaiSP = context.LoaiSanPhams.Where(x => x.MALSP == maLSP.Trim()).FirstOrDefault();
-            context.Entry(loaiSP).State = EntityState.Deleted;
-            context.SaveChanges();
-            return Ok(new { success = true, data = loaiSP });
+
+            var checkLSP = context.SanPhams.Where(x => x.MALSP == maLSP.Trim()).FirstOrDefault();
+            if (checkLSP == null)
+                return Ok(new { success = false, message = "Mã loại sản phẩm không tồn tại" });
+            try
+            {
+                context.SanPhams.Remove(checkLSP);
+
+                int count = await context.SaveChangesAsync();
+                if (count > 0)
+                    return Ok(new { success = true, message = "Xoá loại sản phẩm thành công!" });
+                return Ok(new { success = false, message = "Đã có lỗi xảy ra khi xoá!" });
+            }
+            catch (Exception e)
+            {
+                return Ok(new { success = false, message = "Không thể xoá loại sản phẩm này" });
+            }
 
         }
 
