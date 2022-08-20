@@ -272,14 +272,8 @@ namespace WEB_API_LAPTOP.Controllers
         }
 
         [HttpPut]
-        public ActionResult chinhSuaLoaiSanPham(LoaiSanPham model)
+        public ActionResult chinhSuaLoaiSanPham(LoaiSanPhamAddModel model)
         {
-            //maLSP la maLSP cũ
-/*            var checkPK = context.LoaiSanPhams.Where(x => x.MALSP == model.MALSP && x.MALSP != maLSP.Trim()).FirstOrDefault();
-            if (checkPK != null)
-            {
-                return Ok(new { success = false, message = "Đã tồn tại mã loại sản phẩm này" });
-            }*/
             var checkName = context.LoaiSanPhams.Where(x => x.TENLSP.ToLower().Trim() == model.TENLSP.ToLower().Trim() && x.MALSP != model.MALSP.Trim()).FirstOrDefault();
             if (checkName != null)
             {
@@ -296,20 +290,25 @@ namespace WEB_API_LAPTOP.Controllers
             lsp.CARDSCREEN = model.CARDSCREEN.Trim();
             lsp.MAHANG = model.MAHANG;
             lsp.SOLUONG = model.SOLUONG;
-            context.Entry(lsp).State = EntityState.Modified;
-            /*        if (maLSP != model.MALSP.Trim())
-                    {
-                        List<SqlParameter> param = new List<SqlParameter>();
-                        param.Add(new SqlParameter("@pk", maLSP));
-                        param.Add(new SqlParameter("@pk_Update", model.MALSP));
-                        param.Add(new SqlParameter("@table_Name", "LOAISANPHAM"));
-                        var execute = new SQLHelper(_configuration).ExecuteQuery("sp_Update_PK_LoaiSP", param);
-                    }*/
 
-            int count = context.SaveChanges(); 
-            if (count > 0)
-                return Ok(new { success = true, message = $"Chỉnh sửa thành công " });
-            return Ok(new { success = false, message = $"Chỉnh sửa thất bại" });
+            try
+            {
+                context.Entry(lsp).State = EntityState.Modified;
+                // Xử lý giá
+                GiaThayDoi giaThayDoi = new GiaThayDoi();
+                giaThayDoi.GIAMOI = model.GIAMOI;
+                giaThayDoi.NGAYAPDUNG = DateTime.Now;
+                giaThayDoi.MALSP = model.MALSP;
+                giaThayDoi.MANV = model.MANV;
+                context.GiaThayDois.Add(giaThayDoi);
+                context.SaveChanges();
+                return Ok(new { success = true, message = "Cập nhật loại sản phẩm thành công" });
+            }
+            catch (Exception e)
+            {
+                return Ok(new { success = false, message = "Cập nhật loại sản phẩm thất bại" });
+            }
+
 
         }
         [HttpDelete]
