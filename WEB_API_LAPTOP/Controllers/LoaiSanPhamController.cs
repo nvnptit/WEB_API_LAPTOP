@@ -290,18 +290,24 @@ namespace WEB_API_LAPTOP.Controllers
             lsp.CARDSCREEN = model.CARDSCREEN.Trim();
             lsp.MAHANG = model.MAHANG;
             lsp.SOLUONG = model.SOLUONG;
+            lsp.ISGOOD = model.ISGOOD;
+            lsp.ISNEW = model.ISNEW;
 
             try
             {
                 context.Entry(lsp).State = EntityState.Modified;
                 // Xử lý giá
-                GiaThayDoi giaThayDoi = new GiaThayDoi();
-                giaThayDoi.GIAMOI = model.GIAMOI;
-                giaThayDoi.NGAYAPDUNG = DateTime.Now;
-                giaThayDoi.MALSP = model.MALSP;
-                giaThayDoi.MANV = model.MANV;
-                context.GiaThayDois.Add(giaThayDoi);
-                context.SaveChanges();
+                var giaCu = context.GiaThayDois.Where(x => x.MALSP == model.MALSP.Trim()).FirstOrDefault();
+                if (giaCu.GIAMOI != model.GIAMOI)
+                {
+                    GiaThayDoi giaThayDoi = new GiaThayDoi();
+                    giaThayDoi.GIAMOI = model.GIAMOI;
+                    giaThayDoi.NGAYAPDUNG = DateTime.Now;
+                    giaThayDoi.MALSP = model.MALSP;
+                    giaThayDoi.MANV = model.MANV;
+                    context.GiaThayDois.Add(giaThayDoi);
+                    context.SaveChanges();
+                }
                 return Ok(new { success = true, message = "Cập nhật loại sản phẩm thành công" });
             }
             catch (Exception e)
