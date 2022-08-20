@@ -239,23 +239,6 @@ namespace WEB_API_LAPTOP.Controllers
             modelAdd.TENLSP = model.TENLSP.Trim();
             modelAdd.SOLUONG = model.SOLUONG;
 
-            // xử lý upload hình
-            /*var file = model.ANHLSP;
-            if (file != null)
-            {
-                String FileName = Guid.NewGuid().ToString() + file.FileName;
-                string filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/images/", FileName);
-                using (var stream = new FileStream(filePath, FileMode.Create))
-                {
-                    file.CopyTo(stream);
-                }
-                modelAdd.ANHLSP = "/images/" + FileName;
-            }
-            else
-            {
-                modelAdd.ANHLSP = "/images/noimage.png";
-            }*/
-
             modelAdd.MOTA = model.MOTA.Trim();
             modelAdd.CPU = model.CPU.Trim();
             modelAdd.RAM = model.RAM.Trim();
@@ -265,30 +248,27 @@ namespace WEB_API_LAPTOP.Controllers
             modelAdd.MAHANG = model.MAHANG;
             modelAdd.ISNEW = model.ISNEW;
             modelAdd.ISGOOD = model.ISGOOD;
-            /*
-            var checkPK = context.LoaiSanPhams.Where(x => x.MALSP == model.MALSP.Trim()).FirstOrDefault();
-            if (checkPK != null)
-            {
-                return Ok(new { success = false, message = "Đã tồn tại loại sản phầm này" });
-            }*/
-          /*  var checkName = context.LoaiSanPhams.Where(x => x.TENLSP.Trim().ToLower().Trim() == model.TENLSP.Trim().ToLower().Trim()).FirstOrDefault();
-            if (checkName != null)
-            {
-                return Ok(new { success = false, message = "Đã tồn tại tên sản phẩm" });
-            }*/
-            context.LoaiSanPhams.Add(modelAdd);
-            context.SaveChanges();
-            // Xử lý giá
-            GiaThayDoi giaThayDoi = new GiaThayDoi();
-            giaThayDoi.GIAMOI = model.GIAMOI;
-            giaThayDoi.NGAYAPDUNG = DateTime.Now;
-            giaThayDoi.MALSP = model.MALSP;
-            giaThayDoi.MANV = model.MANV;
-            
-            context.GiaThayDois.Add(giaThayDoi);
 
-            context.SaveChanges();
-            return Ok(new { success = true, data = modelAdd });
+            try
+            {
+                context.LoaiSanPhams.Add(modelAdd);
+                context.SaveChanges();
+                // Xử lý giá
+                GiaThayDoi giaThayDoi = new GiaThayDoi();
+                giaThayDoi.GIAMOI = model.GIAMOI;
+                giaThayDoi.NGAYAPDUNG = DateTime.Now;
+                giaThayDoi.MALSP = model.MALSP;
+                giaThayDoi.MANV = model.MANV;
+                context.GiaThayDois.Add(giaThayDoi);
+
+                context.SaveChanges();
+                return Ok(new { success = true, message = "Thêm loại sản phẩm thành công" });
+            }
+            catch (Exception e)
+            {
+                return Ok(new { success = false, message = "Thêm loại sản phẩm thất bại" });
+            }
+           
         }
 
         [HttpPut]
