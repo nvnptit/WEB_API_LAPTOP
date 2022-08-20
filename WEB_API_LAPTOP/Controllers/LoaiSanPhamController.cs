@@ -260,7 +260,6 @@ namespace WEB_API_LAPTOP.Controllers
                 giaThayDoi.MALSP = model.MALSP;
                 giaThayDoi.MANV = model.MANV;
                 context.GiaThayDois.Add(giaThayDoi);
-
                 context.SaveChanges();
                 return Ok(new { success = true, message = "Thêm loại sản phẩm thành công" });
             }

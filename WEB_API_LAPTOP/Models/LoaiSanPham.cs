@@ -29,7 +29,7 @@ namespace WEB_API_LAPTOP.Models
         public String MALSP { get; set; }
         public String TENLSP { get; set; }
         public int SOLUONG { get; set; }
-        public IFormFile? ANHLSP { get; set; }
+        public String? ANHLSP { get; set; }
         public String MOTA { get; set; }
         public String CPU { get; set; }
         public String RAM { get; set; }
