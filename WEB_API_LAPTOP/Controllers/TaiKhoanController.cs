@@ -31,7 +31,7 @@ namespace WEB_API_LAPTOP.Controllers
             {
                 if (!taiKhoan.KICHHOAT)
                 {
-                    return Ok(new { success = true, message = "Tài khoản đã bị vô hiệu hoá" });
+                    return Ok(new { success = false, message = "Tài khoản đã bị vô hiệu hoá" });
                 }
 
                 if (taiKhoan.MAQUYEN == 7)
