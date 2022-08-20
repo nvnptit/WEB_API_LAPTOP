@@ -328,16 +328,36 @@ namespace WEB_API_LAPTOP.Controllers
             var checkLSP = context.LoaiSanPhams.Where(x => x.MALSP == maLSP.Trim()).FirstOrDefault();
             if (checkLSP == null)
                 return Ok(new { success = false, message = "Mã loại sản phẩm không tồn tại" });
+
+            var checkSP = context.SanPhams.Where(x => x.MALSP == maLSP.Trim()).FirstOrDefault();
+            if (checkLSP == null)
+                return Ok(new { success = false, message = "Không thể xoá loại sản phẩm này \nĐã tồn tại sản phẩm" });
+
+            var checkCTGG = context.CTGiamGias.Where(x => x.MALSP == maLSP.Trim()).FirstOrDefault();
+            if (checkLSP == null)
+                return Ok(new
+                {
+                    success = false,
+                    message = "Không thể xoá loại sản phẩm này \nĐã tồn tại trong đợt giảm giá"
+                });
+
+            var checkCTDDH = context.CTDonDatHangs.Where(x => x.MALSP == maLSP.Trim()).FirstOrDefault();
+            if (checkLSP == null)
+                return Ok(new
+                {
+                    success = false,
+                    message = "Không thể xoá loại sản phẩm này \nĐã tồn tại trong đơn đặt hàng"
+                });
+
             try
             {
-                context.LoaiSanPhams.Remove(checkLSP);
-
-                int count = await context.SaveChangesAsync();
-                if (count > 0)
+                List<SqlParameter> param = new List<SqlParameter>();
+                param.Add(new SqlParameter("@malsp", maLSP));
+                var data = new SQLHelper(_configuration).ExecuteNoneQuery("Delete_LoaiSP", param);
+                if (data>0)
                     return Ok(new { success = true, message = "Xoá loại sản phẩm thành công!" });
-                return Ok(new { success = false, message = "Đã có lỗi xảy ra khi xoá!" });
             }
-            catch (Exception e)
+            catch (Exception ex)
             {
                 return Ok(new { success = false, message = "Không thể xoá loại sản phẩm này" });
             }
