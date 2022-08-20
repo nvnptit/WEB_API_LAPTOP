@@ -290,15 +290,15 @@ namespace WEB_API_LAPTOP.Controllers
             lsp.CARDSCREEN = model.CARDSCREEN.Trim();
             lsp.MAHANG = model.MAHANG;
             lsp.SOLUONG = model.SOLUONG;
-            lsp.ISGOOD = model.ISGOOD;
             lsp.ISNEW = model.ISNEW;
-
+            lsp.ISGOOD = model.ISGOOD;
+            
+            context.Entry(lsp).State = EntityState.Modified;
+            context.SaveChanges();
             try
             {
-                context.Entry(lsp).State = EntityState.Modified;
                 // Xử lý giá
-                var giaCu = context.GiaThayDois.Where(x => x.MALSP == model.MALSP.Trim()).LastOrDefault();
-                if (giaCu.GIAMOI != model.GIAMOI)
+                if (model.GIAMOI != -1)
                 {
                     GiaThayDoi giaThayDoi = new GiaThayDoi();
                     giaThayDoi.GIAMOI = model.GIAMOI;
