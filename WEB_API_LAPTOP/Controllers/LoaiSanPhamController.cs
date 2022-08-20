@@ -325,12 +325,12 @@ namespace WEB_API_LAPTOP.Controllers
                 return Ok(new { success = false, message = "Mã loại sản phẩm không được để trống" });
             }
 
-            var checkLSP = context.SanPhams.Where(x => x.MALSP == maLSP.Trim()).FirstOrDefault();
+            var checkLSP = context.LoaiSanPhams.Where(x => x.MALSP == maLSP.Trim()).FirstOrDefault();
             if (checkLSP == null)
                 return Ok(new { success = false, message = "Mã loại sản phẩm không tồn tại" });
             try
             {
-                context.SanPhams.Remove(checkLSP);
+                context.LoaiSanPhams.Remove(checkLSP);
 
                 int count = await context.SaveChangesAsync();
                 if (count > 0)
