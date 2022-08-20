@@ -248,6 +248,7 @@ namespace WEB_API_LAPTOP.Controllers
             modelAdd.MAHANG = model.MAHANG;
             modelAdd.ISNEW = model.ISNEW;
             modelAdd.ISGOOD = model.ISGOOD;
+            modelAdd.ANHLSP = model.ANHLSP;
 
             try
             {
