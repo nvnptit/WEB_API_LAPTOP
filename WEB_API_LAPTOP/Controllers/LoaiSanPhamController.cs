@@ -297,7 +297,7 @@ namespace WEB_API_LAPTOP.Controllers
             {
                 context.Entry(lsp).State = EntityState.Modified;
                 // Xử lý giá
-                var giaCu = context.GiaThayDois.Where(x => x.MALSP == model.MALSP.Trim()).FirstOrDefault();
+                var giaCu = context.GiaThayDois.Where(x => x.MALSP == model.MALSP.Trim()).LastOrDefault();
                 if (giaCu.GIAMOI != model.GIAMOI)
                 {
                     GiaThayDoi giaThayDoi = new GiaThayDoi();
