@@ -330,15 +330,15 @@ namespace WEB_API_LAPTOP.Controllers
             { return Ok(new { success = false, message = "Mã loại sản phẩm không tồn tại" }); }   
 
             var checkSP = context.SanPhams.Where(x => x.MALSP == maLSP.Trim()).FirstOrDefault();
-            if (checkSP == null)
+            if (checkSP != null)
             { return Ok(new { success = false, message = "Không thể xoá loại sản phẩm này \nĐã tồn tại sản phẩm" }); }    
 
             var checkCTGG = context.CTGiamGias.Where(x => x.MALSP == maLSP.Trim()).FirstOrDefault();
-            if (checkCTGG == null)
+            if (checkCTGG != null)
             { return Ok(new { success = false, message = "Không thể xoá loại sản phẩm này \nĐã tồn tại trong đợt giảm giá" }); }   
 
             var checkCTDDH = context.CTDonDatHangs.Where(x => x.MALSP == maLSP.Trim()).FirstOrDefault();
-            if (checkCTDDH == null)
+            if (checkCTDDH != null)
             { return Ok(new { success = false, message = "Không thể xoá loại sản phẩm này \nĐã tồn tại trong đơn đặt hàng" }); }   
 
             try
