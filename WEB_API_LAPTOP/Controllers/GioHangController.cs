@@ -76,7 +76,27 @@ namespace WEB_API_LAPTOP.Controllers
                 param.Add(new SqlParameter("@status", status));
                 var data = new SQLHelper(_configuration).ExecuteQuery("sp_Get_Order", param);
                 var json = JsonConvert.SerializeObject(data);
-                var dataRet = JsonConvert.DeserializeObject<List<HistoryOrder>>(json);
+                var dataRet = JsonConvert.DeserializeObject<List<HistoryOrder1>>(json);
+                return Ok(new { success = true, data = dataRet });
+            }
+            catch (Exception ex)
+            {
+
+                return Ok(new { success = false, message = "Đã có lỗi xảy ra!" });
+            }
+        }
+
+        [HttpGet]
+        [Route("history-detail-order")]
+        public ActionResult getHistoryDetailOrder(int? idGioHang = -1)
+        {
+            try
+            {
+                List<SqlParameter> param = new List<SqlParameter>();
+                param.Add(new SqlParameter("@idgiohang", idGioHang));
+                var data = new SQLHelper(_configuration).ExecuteQuery("sp_Get_DetailOrder", param);
+                var json = JsonConvert.SerializeObject(data);
+                var dataRet = JsonConvert.DeserializeObject<List<HistoryOrder1Detail>>(json);
                 return Ok(new { success = true, data = dataRet });
             }
             catch (Exception ex)
@@ -314,6 +334,79 @@ namespace WEB_API_LAPTOP.Controllers
             }
             return BadRequest();
         }
+
+
+        [HttpPost]
+        [Route("them-gh")]
+        public ActionResult themGH(GioHangAdd1 model1)
+        {
+            GioHang model = new GioHang();
+            model.IDGIOHANG = model1.IDGIOHANG;
+            model.NGAYLAPGIOHANG = DateTime.Now;
+            model.NGAYDUKIEN = model1.NGAYDUKIEN;
+            model.TONGGIATRI = model1.TONGGIATRI;
+            model.MATRANGTHAI = model1.MATRANGTHAI;
+            model.CMND = model1.CMND;
+            model.MANVGIAO = model1.MANVGIAO;
+            model.NGUOINHAN = model1.NGUOINHAN;
+            model.DIACHI = model1.DIACHI;
+            model.SDT = model1.SDT;
+            model.EMAIL = model1.EMAIL;
+
+            //String maLSP = model1.MALSP;
+            //var checkPK = context.GioHangs.Where(x => x.IDGIOHANG == model.IDGIOHANG).FirstOrDefault();
+            //if (checkPK != null)
+            //{
+            //    return Ok(new { success = false, message = "Đã tồn tại khoá chính" });
+            //}
+            var checkCMND = context.KhachHangs.Where(x => x.CMND == model.CMND).FirstOrDefault();
+            if (checkCMND == null)
+            {
+                return Ok(new { success = false, message = "Người dùng không tồn tại" });
+            }
+            context.GioHangs.Add(model);
+            context.SaveChanges();
+
+            // Lấy ra serial + cập nhật id giỏ hàng và loại sản phẩm vào
+            Console.WriteLine(model.IDGIOHANG);
+            Console.WriteLine(model1.dslsp.Count);
+            foreach (LoaiSanPhamViewModel item in model1.dslsp) {
+                try
+                {
+                    List<SqlParameter> param = new List<SqlParameter>();
+                    param.Add(new SqlParameter("@maLSP", item.MALSP));
+                    param.Add(new SqlParameter("@ID_GIO_HANG", model.IDGIOHANG));
+                    param.Add(new SqlParameter("@GIABAN", item.GIAGIAM));
+                    //  var data = new SQLHelper(_configuration).ExecuteQuery("sp_Update_MuaSP", param);
+                    int kq = new SQLHelper(_configuration).ExecuteNoneQuery("sp_Update_MuaSP", param);
+                    if (kq == -1)
+                    {
+                        var gioHangold = context.GioHangs.FirstOrDefault(x => x.IDGIOHANG.Equals(model.IDGIOHANG));
+                        if (gioHangold != null)
+                        {
+                            context.GioHangs.Remove(gioHangold);
+                            context.SaveChanges();
+                        }
+                        return Ok(new { success = false, message = "Thanh toán thất bại" });
+                    }
+                }
+                catch (Exception ex)
+                {
+                    return Ok(new { success = false, message = "Đã có lỗi xảy ra!" });
+                }
+            }
+
+            //var lsp = context.LoaiSanPhams.Where(x => x.MALSP.ToLower() == item.MALSP.ToLower().Trim()).FirstOrDefault();
+            //lsp.SOLUONG = lsp.SOLUONG - 1;
+
+            return Ok(new { success = true, message = "Thanh toán thành công" });
+
+        }
+
+
+
+
+
 
     }
 }

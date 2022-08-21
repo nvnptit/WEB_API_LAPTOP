@@ -86,6 +86,18 @@ namespace WEB_API_LAPTOP.Controllers
             }
             return BadRequest();
         }
-
+        [HttpGet]
+        [Route("list-serial")]
+        public ActionResult getListSerial(string? maLSP)
+        {
+            //Kiểm tra xem có get bằng serial hay không
+            //Không thì lấy toàn bộ sản phẩm
+            if (!string.IsNullOrEmpty(maLSP))
+            {
+                var lstSanPhams = context.SanPhams.Where(x => x.MALSP.ToLower().Trim() == maLSP.ToLower().Trim() && x.IDGIOHANG == null).ToList(); ;
+                return Ok(new { success = true, data = lstSanPhams });
+            }
+            return Ok(new { success = false, message = "Bạn phải truyền mã loại sản phẩm!" });
+        }
     }
 }
