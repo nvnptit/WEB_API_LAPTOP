@@ -26,18 +26,15 @@ namespace WEB_API_LAPTOP.Controllers
         [HttpGet]
         public ActionResult getkhachHang(string? cmnd)
         {
-            //Kiểm tra xem có get bằng serial hay không
-            //Không thì lấy toàn bộ sản phẩm
             if (string.IsNullOrEmpty(cmnd))
             {
                 var lstKhachHangs = context.KhachHangs.ToList();
                 return Ok(new { success = true, data = lstKhachHangs });
             }
-            //Lấy thì lấy ra sản phẩm có serial là giá trị cần tìm
             var khachHang = context.KhachHangs.FirstOrDefault(x => x.CMND.Trim().Equals(cmnd.Trim()));
             if (khachHang != null)
                 return Ok(new { success = true, data = khachHang });
-            return Ok(new { success = true, message = "Không tồn tại nhân viên này" });
+            return Ok(new { success = false, message = "Không tồn tại nhân viên này" });
         }
 
         [HttpPost]

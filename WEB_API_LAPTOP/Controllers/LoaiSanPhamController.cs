@@ -42,6 +42,19 @@ namespace WEB_API_LAPTOP.Controllers
             }
         }
 
+        [Route("LSP")]
+        [HttpGet]
+        public ActionResult getLSP(String? maLSP)
+        {
+            if (string.IsNullOrEmpty(maLSP))
+            {
+                return Ok(new { success = false, message = "Bạn chưa nhập mã loại sản phẩm" });
+            }
+            var lsp = context.LoaiSanPhams.FirstOrDefault(x => x.MALSP.ToLower().Trim().Equals(maLSP.ToLower().Trim()));
+            if (lsp != null)
+                return Ok(new { success = true, message = lsp.SOLUONG });
+            return Ok(new { success = false, message = "Không tồn tại loại sản phẩm này" });
+        }
 
         [HttpGet]
         public ActionResult getFullLoaiSanPham()
