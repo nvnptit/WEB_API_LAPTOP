@@ -53,6 +53,19 @@ namespace WEB_API_LAPTOP.Controllers
             {
                 return Ok(new { success = false, message = "Đã tồn tại tên hãng này" });
             }
+
+            var checkEmail = context.HangSXs.Where(x => x.EMAIL.ToLower().Trim() == model.EMAIL.ToLower().Trim()).FirstOrDefault();
+            if (checkEmail != null)
+            {
+                return Ok(new { success = false, message = "Lỗi trùng email hãng khác" });
+            }
+
+            var checkSDT = context.HangSXs.Where(x => x.SDT == model.SDT).FirstOrDefault();
+            if (checkSDT != null)
+            {
+                return Ok(new { success = false, message = "Lỗi trùng số điện thoại hãng khác" });
+            }
+
             context.HangSXs.Add(model);
             context.SaveChanges();
             return Ok(new { success = true, data = model });
@@ -71,16 +84,16 @@ namespace WEB_API_LAPTOP.Controllers
                     return Ok(new { success = false, message = "Đã tồn tại tên hãng này" });
                 }
 
-                var checkSDT = context.HangSXs.Where(x => x.SDT == hangSX.SDT && x.MAHANG != hangSX.MAHANG).FirstOrDefault();
-                if (checkSDT != null)
-                {
-                    return Ok(new { success = false, message = "Lỗi trùng số điện thoại hãng khác" });
-                }
-
                 var checkEmail = context.HangSXs.Where(x => x.EMAIL.ToLower().Trim() == hangSX.EMAIL.ToLower().Trim() && x.MAHANG != hangSX.MAHANG).FirstOrDefault();
                 if (checkEmail != null)
                 {
                     return Ok(new { success = false, message = "Lỗi trùng email hãng khác" });
+                }
+
+                var checkSDT = context.HangSXs.Where(x => x.SDT == hangSX.SDT && x.MAHANG != hangSX.MAHANG).FirstOrDefault();
+                if (checkSDT != null)
+                {
+                    return Ok(new { success = false, message = "Lỗi trùng số điện thoại hãng khác" });
                 }
 
 
