@@ -111,17 +111,18 @@ namespace WEB_API_LAPTOP.Controllers
                 return Ok(new { success = false, message = "Đã tồn tại mã nhân viên này" });
             }
 
+            var checkEmail = context.NhanViens.Where(x => x.EMAIL.ToLower().Trim() == model.EMAIL.ToLower().Trim()).FirstOrDefault();
+            if (checkEmail != null)
+            {
+                return Ok(new { success = false, message = "Lỗi trùng email nhân viên" });
+            }
+
             var checkSDT = context.NhanViens.Where(x => x.SDT == model.SDT).FirstOrDefault();
             if (checkSDT != null)
             {
                 return Ok(new { success = false, message = "Lỗi trùng số điện thoại nhân viên" });
             }
 
-            var checkEmail = context.NhanViens.Where(x => x.EMAIL.ToLower().Trim() == model.EMAIL.ToLower().Trim()).FirstOrDefault();
-            if (checkEmail != null)
-            {
-                return Ok(new { success = false, message = "Lỗi trùng email nhân viên" });
-            }
 
             context.NhanViens.Add(model);
             context.SaveChanges();

@@ -242,7 +242,7 @@ namespace WEB_API_LAPTOP.Controllers
             var checkTenLSP = context.LoaiSanPhams.Where(x => x.TENLSP.ToLower().Trim() == model.TENLSP.ToLower().Trim()).FirstOrDefault();
             if (checkTenLSP != null)
             {
-                return Ok(new { success = false, message = "Lỗi đã tồn tại tên sản phẩm này" });
+                return Ok(new { success = false, message = "Lỗi đã tồn tại tên loại sản phẩm này" });
             }
 
             LoaiSanPham modelAdd = new LoaiSanPham();
