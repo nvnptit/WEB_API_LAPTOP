@@ -169,6 +169,30 @@ namespace WEB_API_LAPTOP.Controllers
             }
         }
 
+        [HttpGet]
+        [Route("get-lsp-hang")]
+        public ActionResult getLoaiSanPhamByHangSX(int maHang)
+        {
+            try
+            {
+                List<SqlParameter> param = new List<SqlParameter>();
+                param.Add(new SqlParameter("@maHang", maHang));
+                var data = new SQLHelper(_configuration).ExecuteQuery("sp_Get_LoaiSP_ByHangSXV2", param);
+                var json = JsonConvert.SerializeObject(data);
+                var dataRet = JsonConvert.DeserializeObject<List<LoaiSanPhamViewModel>>(json);
+                return Ok(new { success = true, data = dataRet });
+            }
+            catch (Exception ex)
+            {
+                return new JsonResult(new
+                {
+                    message = ex.InnerException
+                })
+                { StatusCode = StatusCodes.Status403Forbidden };
+            }
+        }
+
+
         public static String chuanHoa(String s)
         {
             if (s != null)
