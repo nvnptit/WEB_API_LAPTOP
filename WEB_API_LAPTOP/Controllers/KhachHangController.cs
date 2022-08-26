@@ -14,7 +14,7 @@ namespace WEB_API_LAPTOP.Controllers
     [Route("api/khach-hang")]
     [ApiController]
     public class KhachHangController : ControllerBase
-    {
+    { 
         private readonly IConfiguration _configuration;
         private readonly BanLaptopEntities context;
         public KhachHangController(IConfiguration configuration, BanLaptopEntities _context)
@@ -60,7 +60,7 @@ namespace WEB_API_LAPTOP.Controllers
 
             context.KhachHangs.Add(model);
             context.SaveChanges();
-            return Ok(new { success = true, data = model });
+            return Ok(new { success = true, message = "Đăng ký thành công!" });
 
         }
 

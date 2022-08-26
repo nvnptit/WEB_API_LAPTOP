@@ -130,16 +130,17 @@ namespace WEB_API_LAPTOP.Controllers
         {
             if (tenDangNhap != null)
             {
-                var taiKhoan = context.TaiKhoans.FirstOrDefault(x => x.TENDANGNHAP.Equals(tenDangNhap.Trim()));
+                var taiKhoan = context.TaiKhoans.FirstOrDefault(x => x.TENDANGNHAP == tenDangNhap);
                 if (taiKhoan == null)
-                    return NotFound();
+                {
+                    return Ok(new { success = false, message = $"xoá thất bại" });
+                }
                 context.TaiKhoans.Remove(taiKhoan);
                 int count = await context.SaveChangesAsync();
                 if (count > 0)
                     return Ok(new { success = true, message = $"xoá thành công" });
-                return Ok(new { success = false, message = $"xoá thất bại" });
             }
-            return BadRequest();
+            return Ok(new { success = false, message = $"xoá thất bại" });
         }
 
     }
