@@ -26,18 +26,18 @@ namespace WEB_API_LAPTOP.Controllers
         [HttpGet]
         public ActionResult getTyGia(String? tyGia)
         {
-            //Kiểm tra xem có get maQuyen
-            //Không thì lấy toàn bộ 
-            if (tyGia == null)
+            try
             {
-                var lstTyGias = context.TyGias.ToList();
-                return Ok(new { success = true, data = lstTyGias });
+                List<SqlParameter> param = new List<SqlParameter>();
+                var data = new SQLHelper(_configuration).ExecuteQuery("sp_Get_TyGia", param);
+                var json = JsonConvert.SerializeObject(data);
+                var dataRet = JsonConvert.DeserializeObject<List<TyGia>>(json);
+                return Ok(new { success = true, data = dataRet });
             }
-            //Lấy thì lấy ra giỏ hàng có idGioHang là giá trị cần tìm
-            var gia = context.TyGias.FirstOrDefault(x => x.MATG.Equals(tyGia));
-            if (gia != null)
-                return Ok(new { success = true, data = gia });
-            return Ok(new { success = false, message = "Không tồn tại tỷ giá" });
+            catch (Exception ex)
+            {
+                return Ok(new { success = false, message = "Đã có lỗi xảy ra!" });
+            }
         }
        /* [HttpPost]
         public ActionResult themQuyen(Quyen model)

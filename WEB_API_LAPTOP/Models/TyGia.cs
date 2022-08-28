@@ -7,9 +7,8 @@ namespace WEB_API_LAPTOP.Models
     public class TyGia
     {
         [Key]
-        public String MATG { get; set; }
+        public String MANV { get; set; }
         public DateTime NGAYAPDUNG { get; set; }
         public int GIATRI { get; set; }
-        public String MANV { get; set; }
     }
 }
