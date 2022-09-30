@@ -402,14 +402,8 @@ namespace WEB_API_LAPTOP.Controllers
             //var lsp = context.LoaiSanPhams.Where(x => x.MALSP.ToLower() == item.MALSP.ToLower().Trim()).FirstOrDefault();
             //lsp.SOLUONG = lsp.SOLUONG - 1;
 
-            return Ok(new { success = true, message = "Thanh toán thành công" });
+            return Ok(new { success = true, message = "Đặt hàng thành công" });
 
         }
-
-
-
-
-
-
     }
 }
