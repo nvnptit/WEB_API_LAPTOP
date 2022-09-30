@@ -39,7 +39,28 @@ namespace WEB_API_LAPTOP.Controllers
                  return Ok(new { success = true, data = SanPham });
             return Ok(new { success = true, message = "Không tồn tại sản phẩm này" });
         }
+
+        [HttpGet]
+        [Route("SL-SERI")]
+        public ActionResult getLSP_SERI(string? SERIAL)
+        {
+            try
+            {
+                List<SqlParameter> param = new List<SqlParameter>();
+                var data = new SQLHelper(_configuration).ExecuteQuery("SP_GET_SLSERI", param);
+                var json = JsonConvert.SerializeObject(data);
+                var dataRet = JsonConvert.DeserializeObject<List<SLSERI>>(json);
+                return Ok(new { success = true, data = dataRet });
+            }
+            catch (Exception ex)
+            {
+                return Ok(new { success = false, message = "Đã có lỗi xảy ra!" });
+            }
+        }
         [HttpPost]
+
+        [HttpPost]
+
         public ActionResult themSanPham(SanPham model)
         {
                 var checkPK = context.SanPhams.Where(x => x.SERIAL.ToLower().Trim() == model.SERIAL.ToLower().Trim()).FirstOrDefault();
@@ -51,8 +72,6 @@ namespace WEB_API_LAPTOP.Controllers
                 context.SanPhams.Add(model);
                 context.SaveChanges();
                 return Ok(new { success = true, data = model });
-
-            /* var list = new SQLHelper().ExecuteString("SELECT * FROM SanPham");*/
 
 
         }
