@@ -19,6 +19,9 @@ namespace WEB_API_LAPTOP.Models
         public String? DIACHI { get; set; }
         public String? SDT { get; set; }
         public String? EMAIL { get; set; }
+        public DateTime? NGAYNHAN { get; set; }
+        public String? PHUONGTHUC { get; set; }
+
     }
     public class GioHangEditModel {
 
@@ -33,6 +36,8 @@ namespace WEB_API_LAPTOP.Models
         public String? DIACHI { get; set; }
         public String? SDT { get; set; } 
         public String? EMAIL { get; set; }
+        public DateTime? NGAYNHAN { get; set; }
+        public String? PHUONGTHUC { get; set; }
 
     }
     public class GioHangViewModel
@@ -72,6 +77,8 @@ namespace WEB_API_LAPTOP.Models
         public String? SDT { get; set; }
         public String? EMAIL { get; set; }
         public String? MALSP { get; set; }
+        public DateTime? NGAYNHAN { get; set; }
+        public String? PHUONGTHUC { get; set; }
     }
     public class HistoryOrder
     {
@@ -86,6 +93,8 @@ namespace WEB_API_LAPTOP.Models
         public String? DIACHI { get; set; }
         public String? SDT { get; set; }
         public String? EMAIL { get; set; }
+        public DateTime? NGAYNHAN { get; set; }
+        public String? PHUONGTHUC { get; set; }
 
         //LSP
 
@@ -115,12 +124,14 @@ namespace WEB_API_LAPTOP.Models
         public int? TONGGIATRI { get; set; }
         public String? TENTRANGTHAI { get; set; }
         public String? NVGIAO { get; set; }
+        public String? SDTNVG { get; set; }
         public String? NVDUYET { get; set; }
         public String? NGUOINHAN { get; set; }
         public String? DIACHI { get; set; }
         public String? SDT { get; set; }
         public String? EMAIL { get; set; }
-
+        public DateTime? NGAYNHAN { get; set; }
+        public String? PHUONGTHUC { get; set; }
 
     }
 
@@ -136,7 +147,7 @@ namespace WEB_API_LAPTOP.Models
         public String CARDSCREEN { get; set; }
         public String OS { get; set; }
         public int? GIABAN { get; set; }
-
+        
     }
 
     public class GioHangAdd1
@@ -155,6 +166,9 @@ namespace WEB_API_LAPTOP.Models
         public String? EMAIL { get; set; }
         public String? MALSP { get; set; }
         public List<LoaiSanPhamViewModel> dslsp { get; set; }
+
+        public DateTime? NGAYNHAN { get; set; }
+        public String? PHUONGTHUC { get; set; }
 
     }
 }

@@ -40,8 +40,8 @@ namespace WEB_API_LAPTOP.Controllers
             return Ok(new { success = true, message = "Không tồn tại giỏ hàng này" });
         }
 
-        [HttpGet]
-        [Route("gio-hang-byKH")]
+       /* [HttpGet]
+        [Route("gio-hang-byKH")] // Khong su dung
         public ActionResult getGioHangbyKH(String cmnd)
         {
             try
@@ -61,7 +61,7 @@ namespace WEB_API_LAPTOP.Controllers
                 })
                 { StatusCode = StatusCodes.Status403Forbidden };
             }
-        }
+        }*/
 
         [HttpGet]
         [Route("history-order")]
@@ -166,6 +166,8 @@ namespace WEB_API_LAPTOP.Controllers
             model.DIACHI = model1.DIACHI;
             model.SDT = model1.SDT;
             model.EMAIL = model1.EMAIL;
+            model.NGAYNHAN = model1.NGAYNHAN;
+            model.PHUONGTHUC = model1.PHUONGTHUC;
 
             String maLSP = model1.MALSP;
             var checkPK = context.GioHangs.Where(x => x.IDGIOHANG == model.IDGIOHANG).FirstOrDefault();
@@ -188,7 +190,6 @@ namespace WEB_API_LAPTOP.Controllers
                 List<SqlParameter> param = new List<SqlParameter>();
                 param.Add(new SqlParameter("@maLSP", maLSP));
                 param.Add(new SqlParameter("@ID_GIO_HANG", model.IDGIOHANG));
-              //  var data = new SQLHelper(_configuration).ExecuteQuery("sp_Update_MuaSP", param);
                 int kq = new SQLHelper(_configuration).ExecuteNoneQuery("sp_Update_MuaSP", param);
                 if (kq != 1)
                 {
@@ -219,15 +220,15 @@ namespace WEB_API_LAPTOP.Controllers
         }
         
         
-        [HttpPut]
+       /* [HttpPut]
         public async Task<ActionResult> editGioHang(GioHangEditModel gioHang)
         {
             if (gioHang != null)
             {
 
                 var exist = context.GioHangs.Where(x => x.IDGIOHANG == gioHang.IDGIOHANG).FirstOrDefault();
-                /* DateTime myDateTime = DateTime.Now;
-                 string sqlformatDate = myDateTime.ToString("yyyy-MM-dd HH:mm:ss.fff");*/
+                *//* DateTime myDateTime = DateTime.Now;
+                 string sqlformatDate = myDateTime.ToString("yyyy-MM-dd HH:mm:ss.fff");*//*
 
 
                 exist.NGAYLAPGIOHANG = DateTime.Now;
@@ -256,7 +257,7 @@ namespace WEB_API_LAPTOP.Controllers
                 }
             }
             return Ok(new { success = false, message = "Đã có lỗi xảy ra" });
-        }
+        }*/
 
         [Route("admin")]
         [HttpPut]
@@ -292,6 +293,7 @@ namespace WEB_API_LAPTOP.Controllers
 
                 var exist = context.GioHangs.Where(x => x.IDGIOHANG == gioHang.IDGIOHANG).FirstOrDefault();
                 exist.MATRANGTHAI = gioHang.MATRANGTHAI;
+                exist.NGAYNHAN = DateTime.Now;
 
                 context.Entry(exist).State = EntityState.Modified;
                 int count = await context.SaveChangesAsync();
@@ -352,6 +354,7 @@ namespace WEB_API_LAPTOP.Controllers
             model.DIACHI = model1.DIACHI;
             model.SDT = model1.SDT;
             model.EMAIL = model1.EMAIL;
+            model.PHUONGTHUC = model1.PHUONGTHUC;
 
             //String maLSP = model1.MALSP;
             //var checkPK = context.GioHangs.Where(x => x.IDGIOHANG == model.IDGIOHANG).FirstOrDefault();
