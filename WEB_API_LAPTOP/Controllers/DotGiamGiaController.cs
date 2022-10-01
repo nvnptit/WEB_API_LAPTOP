@@ -52,6 +52,26 @@ namespace WEB_API_LAPTOP.Controllers
 
         }
 
+        [Route("MADGG")]
+        [HttpGet]
+        public ActionResult getMaLSP()
+        {
+            try
+            {
+                List<SqlParameter> param = new List<SqlParameter>();
+                param.Add(new SqlParameter("@BANG", "DOTGIAMGIA"));
+                var data = new SQLHelper(_configuration).ExecuteQuery("LAY_MA", param);
+                var json = JsonConvert.SerializeObject(data);
+                var dataRet = JsonConvert.DeserializeObject<List<MaSo>>(json);
+                return Ok(new { success = true, data = dataRet });
+            }
+            catch (Exception ex)
+            {
+                return Ok(new { success = false, data = "Đã có lỗi xảy ra!" });
+            }
+        }
+
+
         [HttpPut]
         public async Task<ActionResult> editDotGG(DotGiamGia model)
         {
