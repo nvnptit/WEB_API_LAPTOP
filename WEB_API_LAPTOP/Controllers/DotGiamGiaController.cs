@@ -77,27 +77,21 @@ namespace WEB_API_LAPTOP.Controllers
         {
             if (model != null)
             {
-                var dt = context.DotGiamGias.OrderByDescending(x => x.NGAYKETTHUC).FirstOrDefault();
-                if (dt.NGAYKETTHUC >= model.NGAYBATDAU)
-                {
-                    return Ok(new { success = false, message = "Đã có đợt giảm giá khác trong thời gian này" });
-                }
-
-                if (model.NGAYKETTHUC <= model.NGAYBATDAU)
-                {
-                    return Ok(new { success = false, message = "Ngày kết thúc phải lớn hơn ngày bắt đầu" });
-                }
                 var exist = context.DotGiamGias.Where(x => x.MADOTGG == model.MADOTGG).FirstOrDefault();
-                exist.NGAYBATDAU = model.NGAYBATDAU;
-                exist.NGAYKETTHUC = model.NGAYKETTHUC;
-                exist.MOTA = model.MOTA;
-                exist.MANV = model.MANV;
+                if (exist != null)
+                {
+                    exist.MOTA = model.MOTA;
+                    exist.MANV = model.MANV;
 
-                context.Entry(model).State = EntityState.Modified;
-                int count = await context.SaveChangesAsync();
-                if (count > 0)
-                    return Ok(new { success = true, message = $"Chỉnh sửa thành công" });
-                return Ok(new { success = false, message = $"Chỉnh sửa thất bại" });
+                    context.Entry(exist).State = EntityState.Modified;
+                    int count = await context.SaveChangesAsync();
+                    if (count > 0)
+                        return Ok(new { success = true, message = $"Chỉnh sửa thành công" });
+                    return Ok(new { success = false, message = $"Chỉnh sửa thất bại" });
+                } else
+                {
+                    return Ok(new { success = false, message = "Đợt giảm giá không tồn tại" });
+                }
             }
             return BadRequest();
         }
