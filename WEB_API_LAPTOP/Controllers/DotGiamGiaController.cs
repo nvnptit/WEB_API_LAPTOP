@@ -52,6 +52,9 @@ namespace WEB_API_LAPTOP.Controllers
 
         }
 
+       
+
+
         [Route("MADGG")]
         [HttpGet]
         public ActionResult getMaLSP()
@@ -118,5 +121,86 @@ namespace WEB_API_LAPTOP.Controllers
                 return Ok(new { success = false, message = "Không thể xoá đợt giảm giá này" });
             }
         }
+
+        // CHI TIET DOT GIAM GIA
+        [HttpGet]
+        [Route("CHI-TIET")]
+        public ActionResult getCTDotGG(string? maDot)
+        {
+            if (maDot != null)
+            {
+                var lstCTDotGGs = context.CTGiamGias.Where(x => x.MADOTGG == maDot).ToList();
+                return Ok(new { success = true, data = lstCTDotGGs });
+            }else
+            {
+                var lstCTDotGGs = context.CTGiamGias.ToList();
+                return Ok(new { success = true, data = lstCTDotGGs });
+            }
+
+        }
+
+        [HttpPost]
+        [Route("CHI-TIET")]
+        public ActionResult themCTDotGG(CTGiamGia model)
+        {
+            var checkPK = context.CTGiamGias.Where(x => x.MADOTGG == model.MADOTGG && x.MALSP == model.MALSP).FirstOrDefault();
+            if (checkPK != null)
+            {
+                return Ok(new { success = false, message = "Đã tồn tại sản phẩm này trong đợt giảm giá" });
+            }
+
+            context.CTGiamGias.Add(model);
+            context.SaveChanges();
+            return Ok(new { success = true, message = "Thêm sản phẩm vào đợt giảm giá thành công!" });
+
+        }
+
+        [HttpDelete]
+        [Route("CHI-TIET")]
+        public async Task<ActionResult> delCTDotGG(String malsp, String madotgg)
+        {
+            var ctDotGG = context.CTGiamGias.Where(x => x.MADOTGG == madotgg && x.MALSP == malsp).FirstOrDefault();
+            if (ctDotGG == null)
+                return Ok(new { success = false, message = "Sản phẩm không nằm trong đợt giảm giá" });
+            try
+            {
+                context.CTGiamGias.Remove(ctDotGG);
+                int count = await context.SaveChangesAsync();
+                if (count > 0)
+                    return Ok(new { success = true, message = "Xoá sản phẩm khỏi đợt giảm giá thành công!" });
+                return Ok(new { success = false, message = "Đã có lỗi xảy ra khi xoá!" });
+            }
+            catch (Exception e)
+            {
+                return Ok(new { success = false, message = "Không thể xoá sản phẩm khỏi đợt giảm giá này" });
+            }
+
+        }
+
+        [HttpPut]
+        [Route("CHI-TIET")]
+        public async Task<ActionResult> editCTDotGG(CTGiamGia model)
+        {
+            if (model != null)
+            {
+                var exist = context.CTGiamGias.Where(x => x.MADOTGG == model.MADOTGG && x.MALSP == model.MALSP).FirstOrDefault();
+                if (exist != null)
+                {
+                    exist.PHANTRAMGG = model.PHANTRAMGG;
+
+                    context.Entry(exist).State = EntityState.Modified;
+                    int count = await context.SaveChangesAsync();
+                    if (count > 0)
+                        return Ok(new { success = true, message = $"Chỉnh sửa thành công" });
+                    return Ok(new { success = false, message = $"Chỉnh sửa thất bại" });
+                }
+                else
+                {
+                    return Ok(new { success = false, message = "Sản phẩm giảm giá không tồn tại" });
+                }
+            }
+            return BadRequest();
+        }
+
     }
 }
