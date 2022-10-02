@@ -12,6 +12,7 @@ namespace WEB_API_LAPTOP
             modelBuilder.Entity<GiaThayDoi>().HasKey(c => new { c.NGAYAPDUNG, c.MALSP });
             modelBuilder.Entity<CTGiamGia>().HasKey(c => new { c.MADOTGG, c.MALSP });
             modelBuilder.Entity<CTDonDatHang>().HasKey(c => new { c.MADONDH, c.MALSP });
+            modelBuilder.Entity<BinhLuan>().HasKey(c => new { c.CMND, c.SERIAL,c.NGAYBINHLUAN });
         }
         public static String connectionString;
         public DbSet<LoaiSanPham>? LoaiSanPhams { get; set; }
@@ -29,6 +30,7 @@ namespace WEB_API_LAPTOP
         public DbSet<DotGiamGia>? DotGiamGias { get; set; }
         public DbSet<CTGiamGia>? CTGiamGias { get; set; }
         public DbSet<CTDonDatHang>? CTDonDatHangs { get; set; }
+        public DbSet<BinhLuan>? BinhLuans { get; set; }
 
     }
 }
