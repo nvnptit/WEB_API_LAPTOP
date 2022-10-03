@@ -35,7 +35,10 @@ namespace WEB_API_LAPTOP.Controllers
                 var data = context.BinhLuans.Where(x => x.SERIAL == seri).FirstOrDefault();
                 if (data != null)
                 {
-                    return Ok(new { success = false, message = "Bạn đã đánh giá "+data.DIEM+"sao\nBình luận: " + data.MOTA }); ;
+                    return Ok(new { success = true, message = "Bạn đã đánh giá "+data.DIEM+"sao\nBình luận: " + data.MOTA }); 
+                }else
+                {
+                    return Ok(new { success = false, message = "Bình luận không tồn tại" });
                 }
             }
             return BadRequest();
