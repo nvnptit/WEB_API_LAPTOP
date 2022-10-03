@@ -171,8 +171,12 @@ namespace WEB_API_LAPTOP.Controllers
             taikhoan.MATKHAU=sb.ToString();
             context.Entry(taikhoan).State = EntityState.Modified;
             int count = await context.SaveChangesAsync();
+            /*
             string smtpUserName = "codervn77@gmail.com";
-            string smtpPassword = "medhrzgkfkmgfbms";
+            string smtpPassword = "kqyjimmecrnoadmr";
+            */
+            string smtpUserName = "vnn7298@gmail.com";
+            string smtpPassword = "ubmifbtpabhfetan";
             string smtpHost = "smtp.gmail.com";
             int smtpPort = 587;
 
