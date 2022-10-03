@@ -4,7 +4,8 @@ using Microsoft.Data.SqlClient;
 using System.Data;
 using WEB_API_LAPTOP.Models;
 using WEB_API_LAPTOP.Helper;
-
+using System.Security.Cryptography;
+using System.Text;
 
 namespace WEB_API_LAPTOP.Controllers
 {
@@ -141,6 +142,47 @@ namespace WEB_API_LAPTOP.Controllers
                     return Ok(new { success = true, message = $"xoá thành công" });
             }
             return Ok(new { success = false, message = $"xoá thất bại" });
+        }
+        [HttpPost]
+        [Route("forgot-pass")]
+        public  async Task<ActionResult> forgotPassword(String email)
+        {
+            var exist=context.KhachHangs.FirstOrDefault(x => x.EMAIL == email);
+            if(exist == null)
+            {
+                return Ok(new { success = false, message = $"không tìm thấy tài khoản" });
+            }
+            var taikhoan = context.TaiKhoans.Where(x => x.TENDANGNHAP == exist.TENDANGNHAP).FirstOrDefault();
+            var newPass = new PasswordHelper().CreatePassword(8);
+
+            MD5 mh = MD5.Create();
+            //Chuyển kiểu chuổi thành kiểu byte
+            byte[] inputBytes = System.Text.Encoding.ASCII.GetBytes(newPass);
+            //mã hóa chuỗi đã chuyển
+            byte[] hash = mh.ComputeHash(inputBytes);
+            //tạo đối tượng StringBuilder (làm việc với kiểu dữ liệu lớn)
+            StringBuilder sb = new StringBuilder();
+
+            for (int i = 0; i < hash.Length; i++)
+            {
+                sb.Append(hash[i].ToString("X2"));
+            }
+
+            taikhoan.MATKHAU=sb.ToString();
+            context.Entry(taikhoan).State = EntityState.Modified;
+            int count = await context.SaveChangesAsync();
+            string smtpUserName = "codervn77@gmail.com";
+            string smtpPassword = "medhrzgkfkmgfbms";
+            string smtpHost = "smtp.gmail.com";
+            int smtpPort = 587;
+
+            string emailTo = email;
+            string subject = "Lấy lại mật khẩu";
+            string body = string.Format("Mật khẩu mới của bạn là: <b></b><br/><br/>{0} </br>", newPass);
+            EmailService service = new EmailService();
+            bool kq = service.Send(smtpUserName, smtpPassword, smtpHost, smtpPort, emailTo, subject, body);
+            return Ok(new { result = true, data = newPass });
+
         }
 
     }
