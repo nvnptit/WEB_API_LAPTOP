@@ -35,7 +35,7 @@ namespace WEB_API_LAPTOP.Controllers
                 var data = context.BinhLuans.Where(x => x.SERIAL == seri).FirstOrDefault();
                 if (data != null)
                 {
-                    return Ok(new { success = true, message = "Bạn đã đánh giá "+data.DIEM+ " ⭐ \n\n" + data.MOTA }); 
+                    return Ok(new { success = true, message = "Bạn đã đánh giá "+data.DIEM+ " ⭐\n" + data.MOTA }); 
                 }else
                 {
                     return Ok(new { success = false, message = "Bình luận không tồn tại" });
@@ -95,5 +95,28 @@ namespace WEB_API_LAPTOP.Controllers
             return BadRequest();
         }
 
+        [HttpGet]
+        [Route("SANPHAM")]
+        public ActionResult getlstBinhLuan(String? maLSP)
+        {
+            if (maLSP == null)
+            {
+                return Ok(new { success = false, message = "Bạn phải nhập mã loại sản phẩm" });
+            }
+            try
+            {
+                List<SqlParameter> param = new List<SqlParameter>();
+                param.Add(new SqlParameter("@maLSP", maLSP));
+                var data = new SQLHelper(_configuration).ExecuteQuery("sp_Get_BinhLuanBySP", param);
+                var json = JsonConvert.SerializeObject(data);
+                var dataRet = JsonConvert.DeserializeObject<List<BinhLuanSP>>(json);
+                return Ok(new { success = true, data = dataRet });
+            }
+            catch (Exception ex)
+            {
+                return Ok(new { success = false, message = ex });
+
+            }
+        }
     }
 }

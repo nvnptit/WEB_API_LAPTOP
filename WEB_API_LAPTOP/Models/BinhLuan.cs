@@ -21,4 +21,11 @@ namespace WEB_API_LAPTOP.Models
         public int? DIEM { get; set; }
         public String? MOTA { get; set; }
     }
+    public class BinhLuanSP
+    {
+        public String? TEN { get; set; }
+        public DateTime? NGAYBINHLUAN { get; set; }
+        public int? DIEM { get; set; }
+        public String? MOTA { get; set; }
+    }
 }
