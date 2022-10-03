@@ -75,4 +75,8 @@ namespace WEB_API_LAPTOP.Models
         public int? MAQUYEN { get; set; }
         public Boolean? KICHHOAT { get; set; }
     }
+    public class ForgotPassword
+    {
+        public String? email { get; set; }
+    }
 }

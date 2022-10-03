@@ -145,9 +145,9 @@ namespace WEB_API_LAPTOP.Controllers
         }
         [HttpPost]
         [Route("forgot-pass")]
-        public  async Task<ActionResult> forgotPassword(String email)
+        public  async Task<ActionResult> forgotPassword(ForgotPassword model)
         {
-            var exist=context.KhachHangs.FirstOrDefault(x => x.EMAIL == email);
+            var exist=context.KhachHangs.FirstOrDefault(x => x.EMAIL == model.email);
             if(exist == null)
             {
                 return Ok(new { success = false, message = $"không tìm thấy tài khoản" });
@@ -176,7 +176,7 @@ namespace WEB_API_LAPTOP.Controllers
             string smtpHost = "smtp.gmail.com";
             int smtpPort = 587;
 
-            string emailTo = email;
+            string emailTo = model.email;
             string subject = "Lấy lại mật khẩu";
             string body = string.Format("Mật khẩu mới của bạn là: <b></b><br/><br/>{0} </br>", newPass);
             EmailService service = new EmailService();
