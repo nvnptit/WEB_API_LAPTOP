@@ -35,7 +35,7 @@ namespace WEB_API_LAPTOP.Controllers
                 var data = context.BinhLuans.Where(x => x.SERIAL == seri).FirstOrDefault();
                 if (data != null)
                 {
-                    return Ok(new { success = true, message = "Bạn đã đánh giá "+data.DIEM+"sao\nBình luận: " + data.MOTA }); 
+                    return Ok(new { success = true, message = "Bạn đã đánh giá "+data.DIEM+ " ⭐ \n\nBình luận: " + data.MOTA }); 
                 }else
                 {
                     return Ok(new { success = false, message = "Bình luận không tồn tại" });
@@ -62,6 +62,7 @@ namespace WEB_API_LAPTOP.Controllers
             {
                 return Ok(new { success = false, message = "Khách hàng không tồn tại" });
             }
+            model.NGAYBINHLUAN = DateTime.Now;
 
             context.BinhLuans.Add(model);
             context.SaveChanges();
@@ -78,12 +79,13 @@ namespace WEB_API_LAPTOP.Controllers
                 {
                     exist.DIEM = model.DIEM;
                     exist.MOTA = model.MOTA;
+                    exist.NGAYBINHLUAN = DateTime.Now;
 
                     context.Entry(exist).State = EntityState.Modified;
                     int count = await context.SaveChangesAsync();
                     if (count > 0)
-                        return Ok(new { success = true, message = $"Chỉnh sửa thành công" });
-                    return Ok(new { success = false, message = $"Chỉnh sửa thất bại" });
+                        return Ok(new { success = true, message = $"Đã cập nhật đánh giá!" });
+                    return Ok(new { success = false, message = $"Đánh giá thất bại" });
                 }
                 else
                 {
