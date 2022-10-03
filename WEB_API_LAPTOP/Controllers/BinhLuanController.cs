@@ -24,10 +24,21 @@ namespace WEB_API_LAPTOP.Controllers
         }
 
         [HttpGet]
-        public ActionResult getBinhLuan()
+        public ActionResult getBinhLuan(String? seri)
         {
-            var lstBinhLuans = context.BinhLuans.ToList();
-            return Ok(new { success = true, data = lstBinhLuans });
+            if (seri == null)
+            {
+                var lstBinhLuans = context.BinhLuans.ToList();
+                return Ok(new { success = true, data = lstBinhLuans });
+            } else
+            {
+                var data = context.BinhLuans.Where(x => x.SERIAL == seri).FirstOrDefault();
+                if (data != null)
+                {
+                    return Ok(new { success = false, message = "Bạn đã đánh giá "+data.DIEM+"sao\nBình luận: " + data.MOTA }); ;
+                }
+            }
+            return BadRequest();
         }
 
         [HttpPost]
