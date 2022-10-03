@@ -150,7 +150,7 @@ namespace WEB_API_LAPTOP.Controllers
             var exist=context.KhachHangs.FirstOrDefault(x => x.EMAIL == model.email);
             if(exist == null)
             {
-                return Ok(new { success = false, message = $"không tìm thấy tài khoản" });
+                return Ok(new { success = false, message = $"Không tìm thấy tài khoản" });
             }
             var taikhoan = context.TaiKhoans.Where(x => x.TENDANGNHAP == exist.TENDANGNHAP).FirstOrDefault();
             var newPass = new PasswordHelper().CreatePassword(8);
@@ -181,7 +181,7 @@ namespace WEB_API_LAPTOP.Controllers
             string body = string.Format("Mật khẩu mới của bạn là: <b></b><br/><br/>{0} </br>", newPass);
             EmailService service = new EmailService();
             bool kq = service.Send(smtpUserName, smtpPassword, smtpHost, smtpPort, emailTo, subject, body);
-            return Ok(new { result = true, data = newPass });
+            return Ok(new { success = true, message = "Mật khẩu mới đã được gửi đến email của bạn!\nVui lòng kiểm tra hộp thư" });
 
         }
 
