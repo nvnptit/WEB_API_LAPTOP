@@ -21,6 +21,7 @@ namespace WEB_API_LAPTOP.Models
         public String? EMAIL { get; set; }
         public DateTime? NGAYNHAN { get; set; }
         public String? PHUONGTHUC { get; set; }
+        public Boolean? THANHTOAN { get; set; }
 
     }
     public class GioHangEditModel {
@@ -38,6 +39,7 @@ namespace WEB_API_LAPTOP.Models
         public String? EMAIL { get; set; }
         public DateTime? NGAYNHAN { get; set; }
         public String? PHUONGTHUC { get; set; }
+        public Boolean? THANHTOAN { get; set; }
 
     }
     public class GioHangViewModel
@@ -79,6 +81,7 @@ namespace WEB_API_LAPTOP.Models
         public String? MALSP { get; set; }
         public DateTime? NGAYNHAN { get; set; }
         public String? PHUONGTHUC { get; set; }
+        public Boolean? THANHTOAN { get; set; }
     }
     public class HistoryOrder
     {
@@ -95,6 +98,7 @@ namespace WEB_API_LAPTOP.Models
         public String? EMAIL { get; set; }
         public DateTime? NGAYNHAN { get; set; }
         public String? PHUONGTHUC { get; set; }
+        public Boolean? THANHTOAN { get; set; }
 
         //LSP
 
@@ -132,6 +136,7 @@ namespace WEB_API_LAPTOP.Models
         public String? EMAIL { get; set; }
         public DateTime? NGAYNHAN { get; set; }
         public String? PHUONGTHUC { get; set; }
+        public Boolean? THANHTOAN { get; set; }
 
     }
 
@@ -169,6 +174,7 @@ namespace WEB_API_LAPTOP.Models
 
         public DateTime? NGAYNHAN { get; set; }
         public String? PHUONGTHUC { get; set; }
+        public Boolean? THANHTOAN { get; set; }
 
     }
 }

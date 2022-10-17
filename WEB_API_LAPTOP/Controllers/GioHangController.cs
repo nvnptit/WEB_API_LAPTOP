@@ -151,7 +151,7 @@ namespace WEB_API_LAPTOP.Controllers
         }
 
 
-        [HttpPost]
+       /* [HttpPost]
         public ActionResult themGioHang(GioHangAdd model1)
         {
             GioHang model = new GioHang();
@@ -168,6 +168,13 @@ namespace WEB_API_LAPTOP.Controllers
             model.EMAIL = model1.EMAIL;
             model.NGAYNHAN = model1.NGAYNHAN;
             model.PHUONGTHUC = model1.PHUONGTHUC;
+            if (model1.PHUONGTHUC == "COD")
+            {
+                model.THANHTOAN = false;
+            }else
+            {
+                model.THANHTOAN = true;
+            }
 
             String maLSP = model1.MALSP;
             var checkPK = context.GioHangs.Where(x => x.IDGIOHANG == model.IDGIOHANG).FirstOrDefault();
@@ -217,7 +224,7 @@ namespace WEB_API_LAPTOP.Controllers
 
             return Ok(new { success = true, data = model });
 
-        }
+        }*/
         
         
        /* [HttpPut]
@@ -294,10 +301,21 @@ namespace WEB_API_LAPTOP.Controllers
                 var exist = context.GioHangs.Where(x => x.IDGIOHANG == gioHang.IDGIOHANG).FirstOrDefault();
                 exist.MATRANGTHAI = gioHang.MATRANGTHAI;
                 exist.NGAYNHAN = DateTime.Now;
+                exist.THANHTOAN = gioHang.THANHTOAN;
 
+                if (gioHang.NGAYDUKIEN != null)
+                {
+                    exist.NGAYNHAN = null;
+                    exist.NGAYDUKIEN = gioHang.NGAYDUKIEN;
+                }
+                
                 context.Entry(exist).State = EntityState.Modified;
                 int count = await context.SaveChangesAsync();
                 if (count > 0)
+                    if (gioHang.NGAYDUKIEN != null)
+                    {
+                        return Ok(new { success = true, message = $"Đã cập nhật ngày dự kiến" });
+                    }
                     return Ok(new { success = true, message = $"Hoàn tất đơn hàng số {gioHang.IDGIOHANG}" });
                 return Ok(new { success = false, message = $"Hoàn tất đơn hàng số {gioHang.IDGIOHANG}" });
             }
@@ -355,13 +373,16 @@ namespace WEB_API_LAPTOP.Controllers
             model.SDT = model1.SDT;
             model.EMAIL = model1.EMAIL;
             model.PHUONGTHUC = model1.PHUONGTHUC;
+            if (model1.PHUONGTHUC == "COD")
+            {
+                model.THANHTOAN = false;
+            }
+            else
+            {
+                model.THANHTOAN = true;
+            }
 
-            //String maLSP = model1.MALSP;
-            //var checkPK = context.GioHangs.Where(x => x.IDGIOHANG == model.IDGIOHANG).FirstOrDefault();
-            //if (checkPK != null)
-            //{
-            //    return Ok(new { success = false, message = "Đã tồn tại khoá chính" });
-            //}
+            
             var checkCMND = context.KhachHangs.Where(x => x.CMND == model.CMND).FirstOrDefault();
             if (checkCMND == null)
             {
