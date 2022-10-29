@@ -270,9 +270,26 @@ namespace WEB_API_LAPTOP.Controllers
         [HttpPut]
         public async Task<ActionResult> editGioHangAD(GioHangEditModel gioHang)
         {
-            if (gioHang != null)
+            if (gioHang.MATRANGTHAI == 3)
             {
-
+                try
+                {
+                    List<SqlParameter> param = new List<SqlParameter>();
+                    param.Add(new SqlParameter("@ID_GIO_HANG", gioHang.IDGIOHANG));
+                    var data = new SQLHelper(_configuration).ExecuteQuery("sp_Update_CancelOrder", param);
+                    return Ok(new { success = true, message = "Huỷ đơn hàng thành công" });
+                }
+                catch (Exception ex)
+                {
+                    return new JsonResult(new
+                    {
+                        message = ex.InnerException
+                    })
+                    { StatusCode = StatusCodes.Status403Forbidden };
+                }
+            }
+            else
+            {
                 var exist = context.GioHangs.Where(x => x.IDGIOHANG == gioHang.IDGIOHANG).FirstOrDefault();
                 exist.MATRANGTHAI = gioHang.MATRANGTHAI;
                 if (exist.MANVDUYET == null)
