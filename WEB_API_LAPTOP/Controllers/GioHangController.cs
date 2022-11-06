@@ -296,7 +296,8 @@ namespace WEB_API_LAPTOP.Controllers
                 {
                     exist.MANVDUYET = gioHang.MANVDUYET;
                 }
-                exist.MANVGIAO=gioHang.MANVGIAO;
+                exist.MANVGIAO = gioHang.MANVGIAO;
+                exist.NGAYDUKIEN = gioHang.NGAYDUKIEN;
 
                 context.Entry(exist).State = EntityState.Modified;
                 int count = await context.SaveChangesAsync();
