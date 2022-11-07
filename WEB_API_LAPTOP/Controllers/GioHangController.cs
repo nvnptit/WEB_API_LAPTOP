@@ -40,28 +40,59 @@ namespace WEB_API_LAPTOP.Controllers
             return Ok(new { success = true, message = "Không tồn tại giỏ hàng này" });
         }
 
-       /* [HttpGet]
-        [Route("gio-hang-byKH")] // Khong su dung
-        public ActionResult getGioHangbyKH(String cmnd)
+        /* [HttpGet]
+         [Route("gio-hang-byKH")] // Khong su dung
+         public ActionResult getGioHangbyKH(String cmnd)
+         {
+             try
+             {
+                 List<SqlParameter> param = new List<SqlParameter>();
+                 param.Add(new SqlParameter("@cmnd", cmnd));
+                 var data = new SQLHelper(_configuration).ExecuteQuery("sp_Get_GIOHANG_BYKHV2", param);
+                 var json = JsonConvert.SerializeObject(data);
+                 var dataRet = JsonConvert.DeserializeObject<List<GioHangViewModel>>(json);
+                 return Ok(new { success = true, data = dataRet });
+             }
+             catch (Exception ex)
+             {
+                 return new JsonResult(new
+                 {
+                     message = ex.InnerException
+                 })
+                 { StatusCode = StatusCodes.Status403Forbidden };
+             }
+         }*/
+        [HttpGet]
+        [Route("history-order-cmnd")]
+        public ActionResult getHistoryOrderCMND(String? cmnd = "")
         {
-            try
+            if (cmnd == null)
             {
-                List<SqlParameter> param = new List<SqlParameter>();
-                param.Add(new SqlParameter("@cmnd", cmnd));
-                var data = new SQLHelper(_configuration).ExecuteQuery("sp_Get_GIOHANG_BYKHV2", param);
-                var json = JsonConvert.SerializeObject(data);
-                var dataRet = JsonConvert.DeserializeObject<List<GioHangViewModel>>(json);
-                return Ok(new { success = true, data = dataRet });
+                return Ok(new { success = false, data = "Thiếu số CMND" });
             }
-            catch (Exception ex)
+            else
             {
-                return new JsonResult(new
-                {
-                    message = ex.InnerException
-                })
-                { StatusCode = StatusCodes.Status403Forbidden };
+                var data = context.GioHangs.Where(x => x.CMND == cmnd).ToList();
+                 return Ok(new { success = true, data = data});
             }
-        }*/
+            /* try
+             {
+                 List<SqlParameter> param = new List<SqlParameter>();
+                 param.Add(new SqlParameter("@cmnd", cmnd));
+                 param.Add(new SqlParameter("@dateFrom", dateFrom));
+                 param.Add(new SqlParameter("@dateTo", dateTo));
+                 param.Add(new SqlParameter("@status", status));
+                 var data = new SQLHelper(_configuration).ExecuteQuery("sp_Get_Order", param);
+                 var json = JsonConvert.SerializeObject(data);
+                 var dataRet = JsonConvert.DeserializeObject<List<HistoryOrder1>>(json);
+                 return Ok(new { success = true, data = dataRet });
+             }
+             catch (Exception ex)
+             {
+
+                 return Ok(new { success = false, message = "Đã có lỗi xảy ra!" });
+             }*/
+        }
 
         [HttpGet]
         [Route("history-order")]
