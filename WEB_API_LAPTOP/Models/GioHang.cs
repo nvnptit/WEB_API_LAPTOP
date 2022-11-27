@@ -119,6 +119,11 @@ namespace WEB_API_LAPTOP.Models
         public int? NAM { get; set; }
         public int? DOANHTHU { get; set; }
     }
+    public class AllStatusOrder
+    {
+        public string? TENTRANGTHAI { get; set; }
+        public int? SOLUONG { get; set; }
+    }
 
     public class HistoryOrder1
     {

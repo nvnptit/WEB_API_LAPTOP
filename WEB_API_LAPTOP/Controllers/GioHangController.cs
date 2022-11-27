@@ -40,6 +40,24 @@ namespace WEB_API_LAPTOP.Controllers
             return Ok(new { success = true, message = "Không tồn tại giỏ hàng này" });
         }
 
+        [HttpGet]
+        [Route("allStatusDH")]
+        public ActionResult getAllStatusOrder()
+        {
+            try
+            {
+                List<SqlParameter> param = new List<SqlParameter>();
+                var data = new SQLHelper(_configuration).ExecuteQuery("Get_TrangThaiDon", param);
+                var json = JsonConvert.SerializeObject(data);
+                var dataRet = JsonConvert.DeserializeObject<List<AllStatusOrder>>(json);
+                return Ok(new { success = true, data = dataRet });
+            }
+            catch (Exception ex)
+            {
+                return Ok(new { success = false, data = new List<AllStatusOrder>[] {} });
+            }
+        }
+
         /* [HttpGet]
          [Route("gio-hang-byKH")] // Khong su dung
          public ActionResult getGioHangbyKH(String cmnd)
@@ -112,7 +130,6 @@ namespace WEB_API_LAPTOP.Controllers
             }
             catch (Exception ex)
             {
-
                 return Ok(new { success = false, message = "Đã có lỗi xảy ra!" });
             }
         }
