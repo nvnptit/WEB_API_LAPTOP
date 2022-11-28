@@ -113,7 +113,7 @@ namespace WEB_API_LAPTOP.Controllers
             //Không thì lấy toàn bộ sản phẩm
             if (!string.IsNullOrEmpty(maLSP))
             {
-                var lstSanPhams = context.SanPhams.Where(x => x.MALSP.ToLower().Trim() == maLSP.ToLower().Trim() && x.IDGIOHANG == null).ToList(); ;
+                var lstSanPhams = context.SanPhams.Where(x => x.MALSP.ToLower().Trim() == maLSP.ToLower().Trim() && x.TRANGTHAIMUA == false).ToList(); ;
                 return Ok(new { success = true, data = lstSanPhams });
             }
             return Ok(new { success = false, message = "Bạn phải truyền mã loại sản phẩm!" });

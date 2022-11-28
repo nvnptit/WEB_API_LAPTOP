@@ -34,7 +34,7 @@ namespace WEB_API_LAPTOP.Controllers
                 return Ok(new { success = true, data = lstGioHangs });
             }
             //Lấy thì lấy ra giỏ hàng có idGioHang là giá trị cần tìm
-            var gioHang = context.GioHangs.FirstOrDefault(x => x.IDGIOHANG.Equals(idGioHang));
+            var gioHang = context.GioHangs.FirstOrDefault(x => x.IDDONHANG.Equals(idGioHang));
             if (gioHang != null)
                 return Ok(new { success = true, data = gioHang });
             return Ok(new { success = true, message = "Không tồn tại giỏ hàng này" });
@@ -136,12 +136,12 @@ namespace WEB_API_LAPTOP.Controllers
 
         [HttpGet]
         [Route("history-detail-order")]
-        public ActionResult getHistoryDetailOrder(int? idGioHang = -1)
+        public ActionResult getHistoryDetailOrder(int? iddonhang = -1)
         {
             try
             {
                 List<SqlParameter> param = new List<SqlParameter>();
-                param.Add(new SqlParameter("@idgiohang", idGioHang));
+                param.Add(new SqlParameter("@idgiohang", iddonhang));
                 var data = new SQLHelper(_configuration).ExecuteQuery("sp_Get_DetailOrder", param);
                 var json = JsonConvert.SerializeObject(data);
                 var dataRet = JsonConvert.DeserializeObject<List<HistoryOrder1Detail>>(json);
@@ -172,7 +172,6 @@ namespace WEB_API_LAPTOP.Controllers
             }
             catch (Exception ex)
             {
-
                 return Ok(new { success = false, message = "Đã có lỗi xảy ra!" });
             }
         }
@@ -193,7 +192,6 @@ namespace WEB_API_LAPTOP.Controllers
             }
             catch (Exception ex)
             {
-
                 return Ok(new { success = true, message = "Đã có lỗi xảy ra!" });
             }
         }
@@ -203,8 +201,8 @@ namespace WEB_API_LAPTOP.Controllers
         public ActionResult themGioHang(GioHangAdd model1)
         {
             GioHang model = new GioHang();
-            model.IDGIOHANG = model1.IDGIOHANG;
-            model.NGAYLAPGIOHANG = DateTime.Now;
+            model.IDDONHANG = model1.IDDONHANG;
+            model.NGAYLAPDONHANG = DateTime.Now;
             model.NGAYDUKIEN = model1.NGAYDUKIEN;
             model.TONGGIATRI = model1.TONGGIATRI;
             model.MATRANGTHAI = model1.MATRANGTHAI;
@@ -225,7 +223,7 @@ namespace WEB_API_LAPTOP.Controllers
             }
 
             String maLSP = model1.MALSP;
-            var checkPK = context.GioHangs.Where(x => x.IDGIOHANG == model.IDGIOHANG).FirstOrDefault();
+            var checkPK = context.GioHangs.Where(x => x.IDDONHANG == model.IDDONHANG).FirstOrDefault();
             if (checkPK != null)
             {
                 return Ok(new { success = false, message = "Đã tồn tại khoá chính" });
@@ -239,16 +237,16 @@ namespace WEB_API_LAPTOP.Controllers
             context.SaveChanges();
 
             // Lấy ra serial + cập nhật id giỏ hàng và loại sản phẩm vào
-            Console.WriteLine(model.IDGIOHANG);
+            Console.WriteLine(model.IDDONHANG);
             try
             {
                 List<SqlParameter> param = new List<SqlParameter>();
                 param.Add(new SqlParameter("@maLSP", maLSP));
-                param.Add(new SqlParameter("@ID_GIO_HANG", model.IDGIOHANG));
+                param.Add(new SqlParameter("@ID_GIO_HANG", model.IDDONHANG));
                 int kq = new SQLHelper(_configuration).ExecuteNoneQuery("sp_Update_MuaSP", param);
                 if (kq != 1)
                 {
-                    var gioHangold = context.GioHangs.FirstOrDefault(x => x.IDGIOHANG.Equals(model.IDGIOHANG));
+                    var gioHangold = context.GioHangs.FirstOrDefault(x => x.IDDONHANG.Equals(model.IDDONHANG));
                     if (gioHangold != null)
                     {
                         context.GioHangs.Remove(gioHangold);
@@ -281,12 +279,12 @@ namespace WEB_API_LAPTOP.Controllers
             if (gioHang != null)
             {
 
-                var exist = context.GioHangs.Where(x => x.IDGIOHANG == gioHang.IDGIOHANG).FirstOrDefault();
+                var exist = context.GioHangs.Where(x => x.IDDONHANG == gioHang.IDDONHANG).FirstOrDefault();
                 *//* DateTime myDateTime = DateTime.Now;
                  string sqlformatDate = myDateTime.ToString("yyyy-MM-dd HH:mm:ss.fff");*//*
 
 
-                exist.NGAYLAPGIOHANG = DateTime.Now;
+                exist.NGAYLAPDONHANG = DateTime.Now;
                 exist.NGAYDUKIEN = gioHang.NGAYDUKIEN;
                 exist.TONGGIATRI = gioHang.TONGGIATRI;
                 exist.MATRANGTHAI = 0;
@@ -299,16 +297,16 @@ namespace WEB_API_LAPTOP.Controllers
                 int count = await context.SaveChangesAsync();
                 if (count > 0)
                 {
-                    var sanpham = context.SanPhams.Where(x => x.IDGIOHANG == gioHang.IDGIOHANG).FirstOrDefault();
+                    var sanpham = context.SanPhams.Where(x => x.IDDONHANG == gioHang.IDDONHANG).FirstOrDefault();
                     var lsp = context.LoaiSanPhams.Where(x => x.MALSP == sanpham.MALSP).FirstOrDefault();
                     lsp.SOLUONG = lsp.SOLUONG - 1;
                     context.SaveChanges();
 
-                    return Ok(new { success = true, message = $"Chỉnh sửa thành công {gioHang.IDGIOHANG}" });
+                    return Ok(new { success = true, message = $"Chỉnh sửa thành công {gioHang.IDDONHANG}" });
                 }
                 else
                 {
-                    return Ok(new { success = false, message = $"Chỉnh sửa thất bại {gioHang.IDGIOHANG}" });
+                    return Ok(new { success = false, message = $"Chỉnh sửa thất bại {gioHang.IDDONHANG}" });
                 }
             }
             return Ok(new { success = false, message = "Đã có lỗi xảy ra" });
@@ -323,7 +321,7 @@ namespace WEB_API_LAPTOP.Controllers
                 try
                 {
                     List<SqlParameter> param = new List<SqlParameter>();
-                    param.Add(new SqlParameter("@ID_GIO_HANG", gioHang.IDGIOHANG));
+                    param.Add(new SqlParameter("@ID_GIO_HANG", gioHang.IDDONHANG));
                     var data = new SQLHelper(_configuration).ExecuteQuery("sp_Update_CancelOrder", param);
                     return Ok(new { success = true, message = "Huỷ đơn hàng thành công" });
                 }
@@ -338,7 +336,7 @@ namespace WEB_API_LAPTOP.Controllers
             }
             else
             {
-                var exist = context.GioHangs.Where(x => x.IDGIOHANG == gioHang.IDGIOHANG).FirstOrDefault();
+                var exist = context.GioHangs.Where(x => x.IDDONHANG == gioHang.IDDONHANG).FirstOrDefault();
                 exist.MATRANGTHAI = gioHang.MATRANGTHAI;
                 if (exist.MANVDUYET == null)
                 {
@@ -350,8 +348,8 @@ namespace WEB_API_LAPTOP.Controllers
                 context.Entry(exist).State = EntityState.Modified;
                 int count = await context.SaveChangesAsync();
                 if (count > 0)
-                    return Ok(new { success = true, message = $"Chỉnh sửa thành công {gioHang.IDGIOHANG}" });
-                return Ok(new { success = false, message = $"Chỉnh sửa thất bại {gioHang.IDGIOHANG}" });
+                    return Ok(new { success = true, message = $"Chỉnh sửa thành công {gioHang.IDDONHANG}" });
+                return Ok(new { success = false, message = $"Chỉnh sửa thất bại {gioHang.IDDONHANG}" });
             }
             return BadRequest();
         }
@@ -364,7 +362,7 @@ namespace WEB_API_LAPTOP.Controllers
             if (gioHang != null)
             {
 
-                var exist = context.GioHangs.Where(x => x.IDGIOHANG == gioHang.IDGIOHANG).FirstOrDefault();
+                var exist = context.GioHangs.Where(x => x.IDDONHANG == gioHang.IDDONHANG).FirstOrDefault();
                 exist.MATRANGTHAI = gioHang.MATRANGTHAI;
                 exist.NGAYNHAN = DateTime.Now;
                 exist.THANHTOAN = gioHang.THANHTOAN;
@@ -382,8 +380,8 @@ namespace WEB_API_LAPTOP.Controllers
                     {
                         return Ok(new { success = true, message = $"Đã cập nhật ngày dự kiến" });
                     }
-                    return Ok(new { success = true, message = $"Hoàn tất đơn hàng số {gioHang.IDGIOHANG}" });
-                return Ok(new { success = false, message = $"Hoàn tất đơn hàng số {gioHang.IDGIOHANG}" });
+                    return Ok(new { success = true, message = $"Hoàn tất đơn hàng số {gioHang.IDDONHANG}" });
+                return Ok(new { success = false, message = $"Hoàn tất đơn hàng số {gioHang.IDDONHANG}" });
             }
             return BadRequest();
         }
@@ -393,7 +391,7 @@ namespace WEB_API_LAPTOP.Controllers
         {
             if (idGioHang != null)
             {
-                var gioHang = context.GioHangs.FirstOrDefault(x => x.IDGIOHANG.Equals(idGioHang));
+                var gioHang = context.GioHangs.FirstOrDefault(x => x.IDDONHANG.Equals(idGioHang));
                 if (gioHang == null)
                 {
                     return Ok(new { success = false, message = "Giỏ hàng không tồn tại" });
@@ -427,8 +425,8 @@ namespace WEB_API_LAPTOP.Controllers
         public ActionResult themGH(GioHangAdd1 model1)
         {
             GioHang model = new GioHang();
-            model.IDGIOHANG = model1.IDGIOHANG;
-            model.NGAYLAPGIOHANG = DateTime.Now;
+            model.IDDONHANG = model1.IDDONHANG;
+            model.NGAYLAPDONHANG = DateTime.Now;
             model.NGAYDUKIEN = model1.NGAYDUKIEN;
             model.TONGGIATRI = model1.TONGGIATRI;
             model.MATRANGTHAI = model1.MATRANGTHAI;
@@ -458,20 +456,20 @@ namespace WEB_API_LAPTOP.Controllers
             context.SaveChanges();
 
             // Lấy ra serial + cập nhật id giỏ hàng và loại sản phẩm vào
-            Console.WriteLine(model.IDGIOHANG);
+            Console.WriteLine(model.IDDONHANG);
             Console.WriteLine(model1.dslsp.Count);
             foreach (LoaiSanPhamViewModel item in model1.dslsp) {
                 try
                 {
                     List<SqlParameter> param = new List<SqlParameter>();
                     param.Add(new SqlParameter("@maLSP", item.MALSP));
-                    param.Add(new SqlParameter("@ID_GIO_HANG", model.IDGIOHANG));
+                    param.Add(new SqlParameter("@ID_GIO_HANG", model.IDDONHANG));
                     param.Add(new SqlParameter("@GIABAN", item.GIAGIAM));
                     //  var data = new SQLHelper(_configuration).ExecuteQuery("sp_Update_MuaSP", param);
                     int kq = new SQLHelper(_configuration).ExecuteNoneQuery("sp_Update_MuaSP", param);
                     if (kq == -1)
                     {
-                        var gioHangold = context.GioHangs.FirstOrDefault(x => x.IDGIOHANG.Equals(model.IDGIOHANG));
+                        var gioHangold = context.GioHangs.FirstOrDefault(x => x.IDDONHANG.Equals(model.IDDONHANG));
                         if (gioHangold != null)
                         {
                             context.GioHangs.Remove(gioHangold);

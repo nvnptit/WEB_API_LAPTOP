@@ -3,12 +3,12 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace WEB_API_LAPTOP.Models
 {
-    [Table("GIOHANG")]
+    [Table("DONHANG")]
     public class GioHang
     {
         [Key]
-        public int? IDGIOHANG { get; set; }
-        public DateTime? NGAYLAPGIOHANG { get; set; }
+        public int? IDDONHANG { get; set; }
+        public DateTime? NGAYLAPDONHANG { get; set; }
         public DateTime? NGAYDUKIEN { get; set; }
         public int? TONGGIATRI { get; set; }
         public int? MATRANGTHAI { get; set; }
@@ -26,8 +26,8 @@ namespace WEB_API_LAPTOP.Models
     }
     public class GioHangEditModel {
 
-        public int? IDGIOHANG { get; set; }
-        public DateTime? NGAYLAPGIOHANG { get; set; }
+        public int? IDDONHANG { get; set; }
+        public DateTime? NGAYLAPDONHANG { get; set; }
         public DateTime? NGAYDUKIEN { get; set; }
         public int? TONGGIATRI { get; set; }
         public int? MATRANGTHAI { get; set; }
@@ -61,13 +61,13 @@ namespace WEB_API_LAPTOP.Models
         public int? PTGG { get; set; }
         public int? GIAGIAM { get; set; }
         public String SERIAL { get; set; }
-        public int? IDGIOHANG { get; set; }
+        public int? IDDONHANG { get; set; }
 
     }
     public class GioHangAdd
     {
-        public int? IDGIOHANG { get; set; }
-        public DateTime? NGAYLAPGIOHANG { get; set; }
+        public int? IDDONHANG { get; set; }
+        public DateTime? NGAYLAPDONHANG { get; set; }
         public DateTime? NGAYDUKIEN { get; set; }
         public int? TONGGIATRI { get; set; }
         public int? MATRANGTHAI { get; set; }
@@ -83,10 +83,11 @@ namespace WEB_API_LAPTOP.Models
         public String? PHUONGTHUC { get; set; }
         public Boolean? THANHTOAN { get; set; }
     }
+
     public class HistoryOrder
     {
-        public int? IDGIOHANG { get; set; }
-        public DateTime? NGAYLAPGIOHANG { get; set; }
+        public int? IDDONHANG { get; set; }
+        public DateTime? NGAYLAPDONHANG { get; set; }
         public DateTime? NGAYDUKIEN { get; set; }
         public int? TONGGIATRI { get; set; }
         public String? TENTRANGTHAI { get; set; }
@@ -101,7 +102,7 @@ namespace WEB_API_LAPTOP.Models
         public Boolean? THANHTOAN { get; set; }
 
         //LSP
-
+/*
         public String? SERIAL { get; set; }
         public String TENLSP { get; set; }
         public string ANHLSP { get; set; }
@@ -110,7 +111,7 @@ namespace WEB_API_LAPTOP.Models
         public String RAM { get; set; }
         public String HARDDRIVE { get; set; }
         public String CARDSCREEN { get; set; }
-        public String OS { get; set; }
+        public String OS { get; set; }*/
 
     }
     public class DoanhThu
@@ -127,8 +128,8 @@ namespace WEB_API_LAPTOP.Models
 
     public class HistoryOrder1
     {
-        public int? IDGIOHANG { get; set; }
-        public DateTime? NGAYLAPGIOHANG { get; set; }
+        public int? IDDONHANG { get; set; }
+        public DateTime? NGAYLAPDONHANG { get; set; }
         public DateTime? NGAYDUKIEN { get; set; }
         public int? TONGGIATRI { get; set; }
         public String? TENTRANGTHAI { get; set; }
@@ -162,8 +163,8 @@ namespace WEB_API_LAPTOP.Models
 
     public class GioHangAdd1
     {
-        public int? IDGIOHANG { get; set; }
-        public DateTime? NGAYLAPGIOHANG { get; set; }
+        public int? IDDONHANG { get; set; }
+        public DateTime? NGAYLAPDONHANG { get; set; }
         public DateTime? NGAYDUKIEN { get; set; }
         public int? TONGGIATRI { get; set; }
         public int? MATRANGTHAI { get; set; }
