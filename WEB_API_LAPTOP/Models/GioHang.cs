@@ -120,6 +120,17 @@ namespace WEB_API_LAPTOP.Models
         public int? NAM { get; set; }
         public int? DOANHTHU { get; set; }
     }
+
+    public class ImportExportLSP
+    {
+        public String? MALSP { get; set; }
+        public String TENLSP { get; set; }
+        public string ANHLSP { get; set; }
+        public int? SLNHAP { get; set; }
+        public int? SLTON { get; set; }
+        public int? SLBAN { get; set; }
+    }
+
     public class AllStatusOrder
     {
         public string? TENTRANGTHAI { get; set; }

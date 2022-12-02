@@ -41,6 +41,24 @@ namespace WEB_API_LAPTOP.Controllers
         }
 
         [HttpGet]
+        [Route("import-exportLSP")]
+        public ActionResult getImportExport()
+        {
+            try
+            {
+                List<SqlParameter> param = new List<SqlParameter>();
+                var data = new SQLHelper(_configuration).ExecuteQuery("sp_Get_ThongKeNhapXuat", param);
+                var json = JsonConvert.SerializeObject(data);
+                var dataRet = JsonConvert.DeserializeObject<List<ImportExportLSP>>(json);
+                return Ok(new { success = true, data = dataRet });
+            }
+            catch (Exception ex)
+            {
+                return Ok(new { success = false, data = new List<ImportExportLSP>[] { } });
+            }
+        }
+
+        [HttpGet]
         [Route("allStatusDH")]
         public ActionResult getAllStatusOrder()
         {
