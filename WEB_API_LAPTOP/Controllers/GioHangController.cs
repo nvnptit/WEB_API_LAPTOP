@@ -41,7 +41,7 @@ namespace WEB_API_LAPTOP.Controllers
         }
 
         [HttpGet]
-        [Route("import-exportLSP")]
+        [Route("importExportLSP")]
         public ActionResult getImportExport()
         {
             try
