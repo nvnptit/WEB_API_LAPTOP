@@ -58,6 +58,29 @@ namespace WEB_API_LAPTOP.Controllers
             }
         }
 
+
+        [HttpGet]
+        [Route("allStatusDHByDate")]
+        public ActionResult getAllStatus(String? dateFrom, String? dateTo)
+        {
+            try
+            {
+                List<SqlParameter> param = new List<SqlParameter>();
+                param.Add(new SqlParameter("@dateFrom", dateFrom));
+                param.Add(new SqlParameter("@dateTo", dateTo));
+                var data = new SQLHelper(_configuration).ExecuteQuery("Get_TrangThaiDonByDate", param);
+                var json = JsonConvert.SerializeObject(data);
+                var dataRet = JsonConvert.DeserializeObject<List<AllStatusOrder>>(json);
+                return Ok(new { success = true, data = dataRet });
+            }
+            catch (Exception ex)
+            {
+                return Ok(new { success = false, data = new List<AllStatusOrder>[] { } });
+            }
+        }
+
+
+
         /* [HttpGet]
          [Route("gio-hang-byKH")] // Khong su dung
          public ActionResult getGioHangbyKH(String cmnd)
