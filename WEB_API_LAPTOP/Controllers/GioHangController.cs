@@ -467,7 +467,8 @@ namespace WEB_API_LAPTOP.Controllers
         {
             GioHang model = new GioHang();
             model.IDDONHANG = model1.IDDONHANG;
-            model.NGAYLAPDONHANG = DateTime.Now;
+         //   model.NGAYLAPDONHANG = DateTime.Now;
+            model.NGAYLAPDONHANG = model1.NGAYLAPDONHANG;
             model.NGAYDUKIEN = model1.NGAYDUKIEN;
             model.TONGGIATRI = model1.TONGGIATRI;
             model.MATRANGTHAI = model1.MATRANGTHAI;
